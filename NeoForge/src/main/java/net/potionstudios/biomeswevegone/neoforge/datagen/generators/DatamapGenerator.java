@@ -11,8 +11,8 @@ import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import net.potionstudios.biomeswevegone.BiomesWeveGone;
-import net.potionstudios.biomeswevegone.world.level.block.BWGBlocks;
 import net.potionstudios.biomeswevegone.world.level.block.BlockFeatures;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,14 +28,14 @@ public class DatamapGenerator extends DataMapProvider {
     }
 
     @Override
-    protected void gather() {
-        builder(NeoForgeDataMaps.FURNACE_FUELS)
-                .add(id(BWGBlocks.PEAT.get().asItem()), new FurnaceFuel(1200), false)
-                .conditions(new ModLoadedCondition(BiomesWeveGone.MOD_ID));
+    protected void gather(HolderLookup.@NotNull Provider provider) {
+        Builder<FurnaceFuel, Item> fuelBuilder = builder(NeoForgeDataMaps.FURNACE_FUELS);
+        BlockFeatures.registerFurnaceFuels((block, burnTime) -> fuelBuilder.add(id(block.asItem()), new FurnaceFuel(burnTime), false));
+        fuelBuilder.conditions(new ModLoadedCondition(BiomesWeveGone.MOD_ID));
 
-        var builder = builder(NeoForgeDataMaps.COMPOSTABLES);
-        BlockFeatures.registerCompostables((item, chance) -> builder.add(id(item.asItem()), new Compostable(chance, true), false));
-        builder.conditions(new ModLoadedCondition(BiomesWeveGone.MOD_ID));
+        Builder<Compostable, Item> compostableBuilder = builder(NeoForgeDataMaps.COMPOSTABLES);
+        BlockFeatures.registerCompostables((item, chance) -> compostableBuilder.add(id(item.asItem()), new Compostable(chance, false), false));
+        compostableBuilder.conditions(new ModLoadedCondition(BiomesWeveGone.MOD_ID));
     }
 
     private ResourceLocation id(Item item) {

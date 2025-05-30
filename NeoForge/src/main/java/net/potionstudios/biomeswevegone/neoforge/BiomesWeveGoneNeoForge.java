@@ -5,10 +5,12 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.potionstudios.biomeswevegone.BiomesWeveGone;
+import net.potionstudios.biomeswevegone.commands.BWGReloadCommand;
 import net.potionstudios.biomeswevegone.neoforge.loot.LootModifiersRegister;
 import net.potionstudios.biomeswevegone.world.entity.BWGEntities;
 import net.potionstudios.biomeswevegone.world.entity.npc.BWGVillagerTrades;
@@ -25,9 +27,10 @@ public class BiomesWeveGoneNeoForge {
 		NeoForgePlatformHandler.register(eventBus);
 		eventBus.addListener(this::onInitialize);
 		eventBus.addListener(this::onPostInitialize);
-		EVENT_BUS.addListener(this::onServerStarting);
+		EVENT_BUS.addListener((ServerAboutToStartEvent event) -> BiomesWeveGone.serverStart(event.getServer()));
 		eventBus.addListener((EntityAttributeCreationEvent event) -> BWGEntities.registerEntityAttributes(event::put));
 		eventBus.addListener((RegisterSpawnPlacementsEvent event) -> BWGEntities.registerSpawnPlacements((consumer) -> event.register(consumer.entityType(), consumer.spawnPlacementType(), consumer.heightmapType(), consumer.predicate(), RegisterSpawnPlacementsEvent.Operation.OR)));
+		EVENT_BUS.addListener((RegisterCommandsEvent event) -> BWGReloadCommand.register(event.getDispatcher()::register));
 		VanillaCompatNeoForge.registerVanillaCompatEvents(EVENT_BUS);
 		LootModifiersRegister.register(eventBus);
 	}
@@ -54,13 +57,5 @@ public class BiomesWeveGoneNeoForge {
 		event.enqueueWork(BiomesWeveGone::postInit);
 		BWGVillagerTrades.makeTrades();
 		BWGVillagerTrades.makeWanderingTrades();
-	}
-
-	/**
-	 * Initializes server-side things.
-	 * @see ServerAboutToStartEvent
-	 */
-	private void onServerStarting(final ServerAboutToStartEvent event) {
-		BiomesWeveGone.serverStart(event.getServer());
 	}
 }

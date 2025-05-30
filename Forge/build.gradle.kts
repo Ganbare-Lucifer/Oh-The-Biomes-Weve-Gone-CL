@@ -25,9 +25,6 @@ configurations {
         isCanBeResolved = true
         isCanBeConsumed = false
     }
-    configureEach {
-        resolutionStrategy.force("net.sf.jopt-simple:jopt-simple:5.0.4")
-    }
 }
 
 loom {
@@ -81,7 +78,9 @@ tasks {
     shadowJar {
         exclude("net/potionstudios/biomeswevegone/forge/datagen/**",
             "architectury.common.json", ".cache/**", "data/biomeswevegone/neoforge/**",
-            "data/neoforge/**")
+            "data/neoforge/**", "data/biomeswevegone/rs_pieces_spawn_counts/**", "data/biomeswevegone/rs_pool_additions/**",
+            "data/biomeswevegone/structure/repurposed_structures/**", "data/biomeswevegone/worldgen/processor_list/repurposed_structures/**",
+            "data/biomeswevegone/worldgen/template_pool/repurposed_structures/**")
         configurations = listOf(project.configurations.getByName("shadowBundle"))
         archiveClassifier.set("dev-shadow")
     }

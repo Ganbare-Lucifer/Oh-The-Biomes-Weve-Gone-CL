@@ -1,12 +1,12 @@
 package net.potionstudios.biomeswevegone.neoforge.datagen.generators;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.*;
 import net.minecraft.tags.*;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -20,6 +20,7 @@ import net.potionstudios.biomeswevegone.world.entity.BWGEntities;
 import net.potionstudios.biomeswevegone.world.entity.ai.village.poi.BWGPoiTypes;
 import net.potionstudios.biomeswevegone.world.item.BWGItems;
 import net.potionstudios.biomeswevegone.world.level.block.BWGBlocks;
+import net.potionstudios.biomeswevegone.world.level.block.plants.vegetation.GlowCaneBlock;
 import net.potionstudios.biomeswevegone.world.level.block.sand.BWGSandSet;
 import net.potionstudios.biomeswevegone.world.level.block.wood.BWGWood;
 import net.potionstudios.biomeswevegone.world.level.block.wood.BWGWoodSet;
@@ -64,6 +65,7 @@ public class TagsGenerator {
      * Used to generate tags for blocks.
      * @see BlockTagsProvider
      */
+    @SuppressWarnings("DataFlowIssue")
     private static class BlockTagGenerator extends BlockTagsProvider {
         private BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
             super(output, lookupProvider, BiomesWeveGone.MOD_ID, existingFileHelper);
@@ -100,6 +102,7 @@ public class TagsGenerator {
 
             tag(BWGBlockTags.PALO_VERDE_LOGS).add(BWGWood.PALO_VERDE_LOG.get(), BWGWood.STRIPPED_PALO_VERDE_LOG.get(), BWGWood.PALO_VERDE_WOOD.get(), BWGWood.STRIPPED_PALO_VERDE_WOOD.get());
             tag(BlockTags.LOGS).addTag(BWGBlockTags.PALO_VERDE_LOGS);
+            tag(BlockTags.LOGS_THAT_BURN).addTag(BWGBlockTags.PALO_VERDE_LOGS);
 
             BWGWood.WOOD.forEach(blocks -> {
                 if (blocks.get() instanceof FlowerPotBlock)
@@ -141,6 +144,9 @@ public class TagsGenerator {
                     BWGBlocks.FLOWERING_JACARANDA_BUSH.get(), BWGBlocks.FLOWERING_INDIGO_JACARANDA_BUSH.get(), BWGWood.FLOWERING_PALO_VERDE_LEAVES.get(), BWGWood.FLOWERING_SKYRIS_LEAVES.get(), BWGWood.FLOWERING_IRONWOOD_LEAVES.get(),
                     BWGWood.FLOWERING_INDIGO_JACARANDA_LEAVES.get(), BWGWood.FLOWERING_JACARANDA_LEAVES.get(), BWGWood.FLOWERING_YUCCA_LEAVES.get(), BWGWood.FLOWERING_ORCHARD_LEAVES.get(), BWGWood.FLOWERING_BAOBAB_LEAVES.get());
 
+            tag(BWGBlockTags.RED_ROCK_BRICKS).add(BWGBlocks.RED_ROCK_BRICKS_SET.getBase(), BWGBlocks.MOSSY_RED_ROCK_BRICKS_SET.getBase(), BWGBlocks.CRACKED_RED_ROCK_BRICKS_SET.getBase(), BWGBlocks.CHISELED_RED_ROCK_BRICKS_SET.getBase());
+            tag(BWGBlockTags.GLOW_BOTTLE).add(BWGBlocks.BLUE_GLOW_BOTTLE.get(), BWGBlocks.GREEN_GLOW_BOTTLE.get(), BWGBlocks.RED_GLOW_BOTTLE.get(), BWGBlocks.YELLOW_GLOW_BOTTLE.get());
+
             tag(BWGBlockTags.BLACK_ICE).add(BWGBlocks.BLACK_ICE.get(), BWGBlocks.PACKED_BLACK_ICE.get());
             tag(BWGBlockTags.BOREALIS_ICE).add(BWGBlocks.BOREALIS_ICE.get(), BWGBlocks.PACKED_BOREALIS_ICE.get());
             tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).addTag(BWGBlockTags.BLACK_ICE).addTag(BWGBlockTags.BOREALIS_ICE);
@@ -153,8 +159,9 @@ public class TagsGenerator {
             tag(BlockTags.DIRT).add(BWGBlocks.LUSH_GRASS_BLOCK.get(), BWGBlocks.SANDY_DIRT.get(), BWGBlocks.PALE_MUD.get(), BWGBlocks.LUSH_DIRT.get(), BWGBlocks.PEAT.get(), BWGBlocks.OVERGROWN_DACITE.get(), BWGBlocks.OVERGROWN_STONE.get(), BWGBlocks.PODZOL_DACITE.get());
             tag(BlockTags.CLIMBABLE).add(BWGBlocks.SKYRIS_VINE.get()).add(BWGBlocks.POISON_IVY.get());
             tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES)
-                    .add(BWGBlocks.OVERGROWN_DACITE.get(), BWGBlocks.OVERGROWN_STONE.get(), BWGBlocks.PODZOL_DACITE.get(),
-                            BWGBlocks.ROCKY_STONE_SET.getBase(), BWGBlocks.MOSSY_STONE_SET.getBase(), BWGBlocks.LUSH_DIRT.get(), BWGBlocks.SANDY_DIRT.get(), BWGBlocks.PEAT.get());
+                    .add(BWGBlocks.OVERGROWN_DACITE.get(), BWGBlocks.OVERGROWN_STONE.get(), BWGBlocks.PODZOL_DACITE.get(), BWGBlocks.MOSSY_STONE_SET.getBase(), BWGBlocks.LUSH_DIRT.get(), BWGBlocks.SANDY_DIRT.get(), BWGBlocks.PEAT.get(),
+                            BWGBlocks.RED_ROCK_SET.getBase(), BWGBlocks.DACITE_SET.getBase(), BWGBlocks.ROCKY_STONE_SET.getBase(), BWGBlocks.PACKED_BLACK_ICE.get(), BWGBlocks.PACKED_BOREALIS_ICE.get(),
+                            BWGBlocks.WINDSWEPT_SAND_SET.getSandstone(), BWGBlocks.BLACK_SAND_SET.getSandstone(), BWGBlocks.WHITE_SAND_SET.getSandstone(), BWGBlocks.BLUE_SAND_SET.getSandstone(), BWGBlocks.PURPLE_SAND_SET.getSandstone(), BWGBlocks.PINK_SAND_SET.getSandstone());
             tag(BlockTags.CROPS).add(BWGBlocks.ODDION_CROP.get(), BWGBlocks.PALE_PUMPKIN_STEM.get());
             tag(BlockTags.LOGS).add(BWGWood.SPIRIT_ROOTS.get());
             tag(BlockTags.LOGS_THAT_BURN).add(BWGWood.SPIRIT_ROOTS.get());
@@ -168,9 +175,16 @@ public class TagsGenerator {
             tag(BlockTags.SAND).add(BWGBlocks.SANDY_DIRT.get(), BWGBlocks.CRACKED_SAND.get());
             tag(Tags.Blocks.BUDDING_BLOCKS).add(BWGWood.IMBUED_BLUE_ENCHANTED_WOOD.get(), BWGWood.IMBUED_GREEN_ENCHANTED_WOOD.get());
             tag(Tags.Blocks.VILLAGER_JOB_SITES).add(BWGBlocks.FORAGERS_TABLE.get());
-            tag(Tags.Blocks.VILLAGER_FARMLANDS).add(BWGBlocks.LUSH_FARMLAND.get());
-            tag(BlockTags.ENDERMAN_HOLDABLE).add(BWGBlocks.PALE_PUMPKIN.get(), BWGBlocks.CARVED_PALE_PUMPKIN.get());
+            tag(Tags.Blocks.VILLAGER_FARMLANDS).add(BWGBlocks.LUSH_FARMLAND.get(), BWGBlocks.SANDY_FARMLAND.get());
+            tag(BlockTags.ENDERMAN_HOLDABLE).add(BWGBlocks.PALE_PUMPKIN.get(), BWGBlocks.CARVED_PALE_PUMPKIN.get(),
+                    BWGBlocks.WINDSWEPT_SAND_SET.getSand(), BWGBlocks.BLACK_SAND_SET.getSand(), BWGBlocks.WHITE_SAND_SET.getSand(), BWGBlocks.BLUE_SAND_SET.getSand(), BWGBlocks.PURPLE_SAND_SET.getSand(), BWGBlocks.PINK_SAND_SET.getSand(),
+                    BWGBlocks.GREEN_MUSHROOM.get(), BWGBlocks.WEEPING_MILKCAP.get());
             tag(BlockTags.SWORD_EFFICIENT).add(BWGBlocks.PALE_PUMPKIN.get(), BWGBlocks.CARVED_PALE_PUMPKIN.get(), BWGBlocks.ATTACHED_PALE_PUMPKIN_STEM.get(), BWGBlocks.PALE_JACK_O_LANTERN.get());
+            tag(BlockTags.FALL_DAMAGE_RESETTING).add(BWGBlocks.BLUEBERRY_BUSH.get());
+            tag(Tags.Blocks.PUMPKINS_NORMAL).add(BWGBlocks.PALE_PUMPKIN.get());
+            tag(Tags.Blocks.PUMPKINS_CARVED).add(BWGBlocks.CARVED_PALE_PUMPKIN.get());
+            tag(Tags.Blocks.PUMPKINS_JACK_O_LANTERNS).add(BWGBlocks.PALE_JACK_O_LANTERN.get());
+
 
             tag(BWGBlockTags.STORAGE_BLOCKS_ALLIUM).add(BWGBlocks.ALLIUM_PETAL_BLOCK.get());
             tag(BWGBlockTags.STORAGE_BLOCKS_PINK_ALLIUM).add(BWGBlocks.PINK_ALLIUM_PETAL_BLOCK.get());
@@ -189,6 +203,25 @@ public class TagsGenerator {
             tag(BlockTags.FROG_PREFER_JUMP_TO).add(BWGBlocks.FLOWERING_TINY_LILY_PADS.get(), BWGBlocks.TINY_LILY_PADS.get());
             tag(BlockTags.SNAPS_GOAT_HORN).add(BWGBlocks.PACKED_BLACK_ICE.get(), BWGBlocks.PACKED_BOREALIS_ICE.get());
 
+            tag(BWGBlockTags.OAK_SAPLINGS).add(BWGWood.BROWN_OAK_SAPLING.getBlock(), BWGWood.ORANGE_OAK_SAPLING.getBlock(), BWGWood.RED_OAK_SAPLING.getBlock());
+            tag(BWGBlockTags.SPRUCE_SAPLINGS).add(BWGWood.BLUE_SPRUCE_SAPLING.getBlock(), BWGWood.RED_SPRUCE_SAPLING.getBlock(), BWGWood.YELLOW_SPRUCE_SAPLING.getBlock(), BWGWood.ORANGE_SPRUCE_SAPLING.getBlock());
+            tag(BWGBlockTags.BIRCH_SAPLINGS).add(BWGWood.YELLOW_BIRCH_SAPLING.getBlock(), BWGWood.ORANGE_BIRCH_SAPLING.getBlock(), BWGWood.RED_BIRCH_SAPLING.getBlock(), BWGWood.BROWN_BIRCH_SAPLING.getBlock());
+
+            //Serene Seasons
+            tag(ModTags.Blocks.YEAR_ROUND_CROPS).add(BWGBlocks.GREEN_MUSHROOM.get(), BWGBlocks.WEEPING_MILKCAP.get(), BWGBlocks.WOOD_BLEWIT.get(), BWGWood.ASPEN.sapling().getBlock(), BWGWood.RED_MAPLE_SAPLING.getBlock())
+                    .addTag(BWGBlockTags.OAK_SAPLINGS);
+            tag(ModTags.Blocks.AUTUMN_CROPS).add(BWGBlocks.PALE_PUMPKIN_STEM.get(), BWGWood.CYPRESS.sapling().getBlock(), BWGWood.EBONY.sapling().getBlock(), BWGWood.FIR.sapling().getBlock(), BWGWood.HOLLY.sapling().getBlock(), BWGWood.JACARANDA.sapling().getBlock(), BWGWood.INDIGO_JACARANDA_SAPLING.getBlock(), BWGWood.MAPLE.sapling().getBlock(), BWGWood.SILVER_MAPLE_SAPLING.getBlock(), BWGWood.PINE.sapling().getBlock(),
+                            BWGWood.WILLOW.sapling().getBlock(), BWGWood.WITCH_HAZEL.sapling().getBlock(), BWGWood.ZELKOVA.sapling().getBlock(), BWGWood.BROWN_ZELKOVA_SAPLING.getBlock(), BWGWood.IRONWOOD.sapling().getBlock(), BWGWood.SKYRIS.sapling().getBlock(), BWGWood.CIKA.sapling().getBlock(), BWGWood.ORCHARD_SAPLING.getBlock(), BWGWood.YUCCA_SAPLING.getBlock())
+                    .addTag(BWGBlockTags.SPRUCE_SAPLINGS).addTag(BWGBlockTags.BIRCH_SAPLINGS);
+            tag(ModTags.Blocks.SPRING_CROPS).add(BWGBlocks.ODDION_CROP.get(), BWGBlocks.BLUEBERRY_BUSH.get(), BWGWood.YELLOW_SAKURA_SAPLING.getBlock(), BWGWood.WHITE_SAKURA_SAPLING.getBlock(), BWGWood.CYPRESS.sapling().getBlock(), BWGWood.FIR.sapling().getBlock(), BWGWood.EBONY.sapling().getBlock(), BWGWood.HOLLY.sapling().getBlock(),
+                            BWGWood.JACARANDA.sapling().getBlock(), BWGWood.INDIGO_JACARANDA_SAPLING.getBlock(), BWGWood.MAHOGANY.sapling().getBlock(), BWGWood.MAPLE.sapling().getBlock(), BWGWood.SILVER_MAPLE_SAPLING.getBlock(), BWGWood.PALM.sapling().getBlock(), BWGWood.PINE.sapling().getBlock(), BWGWood.REDWOOD.sapling().getBlock(), BWGWood.WHITE_MANGROVE.sapling().getBlock(), BWGWood.WILLOW.sapling().getBlock(),
+                            BWGWood.WITCH_HAZEL.sapling().getBlock(), BWGWood.ZELKOVA.sapling().getBlock(), BWGWood.BROWN_ZELKOVA_SAPLING.getBlock(), BWGWood.IRONWOOD.sapling().getBlock(), BWGWood.RAINBOW_EUCALYPTUS.sapling().getBlock(), BWGWood.ARAUCARIA_SAPLING.getBlock(), BWGWood.ORCHARD_SAPLING.getBlock(), BWGWood.YUCCA_SAPLING.getBlock(), BWGWood.SPIRIT.sapling().getBlock())
+                    .addTag(BWGBlockTags.GLOWCANE).addTag(BWGBlockTags.SPRUCE_SAPLINGS).addTag(BWGBlockTags.BIRCH_SAPLINGS);
+            tag(ModTags.Blocks.SUMMER_CROPS).add(BWGBlocks.ODDION_CROP.get(), BWGBlocks.BLUEBERRY_BUSH.get(), BWGWood.BAOBAB.sapling().getBlock(), BWGWood.JACARANDA.sapling().getBlock(), BWGWood.INDIGO_JACARANDA_SAPLING.getBlock(), BWGWood.MAHOGANY.sapling().getBlock(), BWGWood.PALM.sapling().getBlock(), BWGWood.REDWOOD.sapling().getBlock(), BWGWood.WHITE_MANGROVE.sapling().getBlock(),
+                            BWGWood.PALO_VERDE_SAPLING.getBlock(), BWGWood.RAINBOW_EUCALYPTUS.sapling().getBlock(), BWGWood.GREEN_ENCHANTED.sapling().getBlock(), BWGWood.BLUE_ENCHANTED.sapling().getBlock(), BWGWood.ARAUCARIA_SAPLING.getBlock(), BWGWood.ORCHARD_SAPLING.getBlock(), BWGWood.YUCCA_SAPLING.getBlock(), BWGWood.SPIRIT.sapling().getBlock())
+                    .addTag(BWGBlockTags.GLOWCANE);
+            tag(ModTags.Blocks.WINTER_CROPS).add(BWGWood.SKYRIS.sapling().getBlock()).addTag(BWGBlockTags.SPRUCE_SAPLINGS);
+
             sortTagsAlphabeticallyAndRemoveDuplicateTagEntries(this.builders);
         }
 
@@ -202,6 +235,7 @@ public class TagsGenerator {
             else if (object instanceof LeavesBlock) tag(BlockTags.LEAVES).add(object);
             else if (object instanceof CampfireBlock) tag(BlockTags.CAMPFIRES).add(object);
             else if (object instanceof FlowerPotBlock) tag(BlockTags.FLOWER_POTS).add(object);
+            else if (object instanceof GlowCaneBlock) tag(BWGBlockTags.GLOWCANE).add(object);
             SoundType type = object.defaultBlockState().getSoundType();
             if (type == SoundType.STONE || type == SoundType.DEEPSLATE)
                 tag(BlockTags.MINEABLE_WITH_PICKAXE).add(object);
@@ -223,6 +257,7 @@ public class TagsGenerator {
             super(arg, completableFuture, blockTagGenerator.contentsGetter(), BiomesWeveGone.MOD_ID, existingFileHelper);
         }
 
+        @SuppressWarnings("DataFlowIssue")
         @Override
         protected void addTags(HolderLookup.@NotNull Provider provider) {
             BWGWoodSet.woodsets().forEach(set -> {
@@ -273,6 +308,8 @@ public class TagsGenerator {
             copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
             copy(BlockTags.LEAVES, ItemTags.LEAVES);
             copy(BlockTags.WOOL_CARPETS, ItemTags.WOOL_CARPETS);
+            copy(BWGBlockTags.RED_ROCK_BRICKS, BWGItemTags.RED_ROCK_BRICKS);
+            copy(BWGBlockTags.GLOW_BOTTLE, BWGItemTags.GLOW_BOTTLE);
 
             BWGSandSet.getSandSets().forEach(set -> {
                 copy(set.getSandstoneBlocksTag(), set.getSandstoneBlocksItemTag());
@@ -286,48 +323,16 @@ public class TagsGenerator {
             copy(BWGBlockTags.BOREALIS_ICE, BWGItemTags.BOREALIS_ICE);
             copy(Tags.Blocks.BUDDING_BLOCKS, Tags.Items.BUDDING_BLOCKS);
             copy(Tags.Blocks.VILLAGER_JOB_SITES, Tags.Items.VILLAGER_JOB_SITES);
+            copy(Tags.Blocks.PUMPKINS_NORMAL, Tags.Items.PUMPKINS_NORMAL);
+            copy(Tags.Blocks.PUMPKINS_CARVED, Tags.Items.PUMPKINS_CARVED);
+            copy(Tags.Blocks.PUMPKINS_JACK_O_LANTERNS, Tags.Items.PUMPKINS_JACK_O_LANTERNS);
 
-            BWGBlocks.BLOCKS.stream().filter(entry -> entry.get() instanceof FlowerBlock || entry.get() instanceof TallFlowerBlock).forEach(
-                    entry -> {
-                        Block block = entry.get();
-                        if (block.defaultMapColor() == MapColor.COLOR_BLACK)
-                            tag(BWGItemTags.MAKES_BLACK_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_BLUE)
-                            tag(BWGItemTags.MAKES_BLUE_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_BROWN)
-                            tag(BWGItemTags.MAKES_BROWN_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_CYAN)
-                            tag(BWGItemTags.MAKES_CYAN_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_GRAY)
-                            tag(BWGItemTags.MAKES_GRAY_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_GREEN)
-                            tag(BWGItemTags.MAKES_GREEN_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_LIGHT_BLUE)
-                            tag(BWGItemTags.MAKES_LIGHT_BLUE_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_LIGHT_GRAY)
-                            tag(BWGItemTags.MAKES_LIGHT_GRAY_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_MAGENTA)
-                            tag(BWGItemTags.MAKES_MAGENTA_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_ORANGE)
-                            tag(BWGItemTags.MAKES_ORANGE_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_PINK)
-                            tag(BWGItemTags.MAKES_PINK_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_PURPLE)
-                            tag(BWGItemTags.MAKES_PURPLE_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_RED)
-                            tag(BWGItemTags.MAKES_RED_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.TERRACOTTA_WHITE)
-                            tag(BWGItemTags.MAKES_WHITE_DYE).add(block.asItem());
-                        else if (block.defaultMapColor() == MapColor.COLOR_YELLOW)
-                            tag(BWGItemTags.MAKES_YELLOW_DYE).add(block.asItem());
-                    }
-            );
+            copy(BWGBlockTags.OAK_SAPLINGS, BWGItemTags.OAK_SAPLINGS);
+            copy(BWGBlockTags.SPRUCE_SAPLINGS, BWGItemTags.SPRUCE_SAPLINGS);
+            copy(BWGBlockTags.BIRCH_SAPLINGS, BWGItemTags.BIRCH_SAPLINGS);
+
             tag(BWGItemTags.GLOWCANE_POWDER).add(BWGItems.BLUE_GLOWCANE_POWDER.get(), BWGItems.GREEN_GLOWCANE_POWDER.get(), BWGItems.RED_GLOWCANE_POWDER.get(), BWGItems.YELLOW_GLOWCANE_POWDER.get());
             tag(BWGItemTags.GLOWCANE_SHOOT).add(BWGItems.BLUE_GLOWCANE_SHOOT.get(), BWGItems.GREEN_GLOWCANE_SHOOT.get(), BWGItems.RED_GLOWCANE_SHOOT.get(), BWGItems.YELLOW_GLOWCANE_SHOOT.get());
-            tag(BWGItemTags.MAKES_RED_DYE).add(BWGItems.RED_GLOWCANE_POWDER.get());
-            tag(BWGItemTags.MAKES_YELLOW_DYE).add(BWGItems.YELLOW_GLOWCANE_POWDER.get());
-            tag(BWGItemTags.MAKES_GREEN_DYE).add(BWGItems.GREEN_GLOWCANE_POWDER.get());
-            tag(BWGItemTags.MAKES_BLUE_DYE).add(BWGItems.BLUE_GLOWCANE_POWDER.get());
             copy(BWGBlockTags.PALO_VERDE_LOGS, BWGItemTags.PALO_VERDE_LOGS);
             tag(BWGItemTags.SHEARS).addOptionalTag(Tags.Items.TOOLS_SHEAR);
             tag(Tags.Items.MUSIC_DISCS).add(BWGItems.MUSIC_DISC_PIXIE_CLUB.get());
@@ -345,6 +350,40 @@ public class TagsGenerator {
             tag(Tags.Items.CROPS_PUMPKIN).add(BWGBlocks.PALE_PUMPKIN.get().asItem());
             tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(BWGBlocks.CARVED_PALE_PUMPKIN.get().asItem());
             tag(ItemTags.VANISHING_ENCHANTABLE).add(BWGBlocks.CARVED_PALE_PUMPKIN.get().asItem());
+            tag(ItemTags.PIGLIN_REPELLENTS).add(BWGItems.SOUL_FRUIT.get());
+
+            // Dye Recipes
+            tag(BWGItemTags.MAKES_BLACK_DYE).add(BWGBlocks.BLACK_ROSE.getItem());
+            tag(BWGItemTags.MAKES_BLUE_DYE).add(BWGBlocks.BLUE_SAGE.getItem(), BWGBlocks.VIOLET_LEATHER_FLOWER.getItem(), BWGItems.BLUEBERRIES.get(), BWGItems.BLUE_GLOWCANE_POWDER.get());
+            tag(BWGItemTags.MAKES_CYAN_DYE).add(BWGBlocks.CYAN_AMARANTH.getItem(), BWGBlocks.CYAN_ROSE.getItem(), BWGBlocks.CYAN_TULIP.getItem(), BWGBlocks.WINTER_CYCLAMEN.getItem());
+            tag(BWGItemTags.MAKES_GREEN_DYE).add(BWGBlocks.GOLDEN_SPINED_CACTUS.getItem(), BWGBlocks.MINI_CACTUS.getItem(), BWGBlocks.PRICKLY_PEAR_CACTUS.getItem(), BWGBlocks.HORSEWEED.getItem(), BWGBlocks.WINTER_SUCCULENT.getItem(), BWGItems.GREEN_GLOWCANE_POWDER.get());
+            tag(BWGItemTags.MAKES_LIGHT_BLUE_DYE).add(BWGBlocks.WINTER_SCILLA.getItem());
+            tag(BWGItemTags.MAKES_LIME_DYE).add(BWGBlocks.GREEN_TULIP.getItem());
+            tag(BWGItemTags.MAKES_MAGENTA_DYE).add(BWGBlocks.MAGENTA_AMARANTH.getItem(), BWGBlocks.MAGENTA_TULIP.getItem(), BWGBlocks.LAZARUS_BELLFLOWER.getItem(), BWGBlocks.PROTEA_FLOWER.getItem(), BWGBlocks.FAIRY_SLIPPER.getItem(), BWGBlocks.INCAN_LILY.getItem());
+            tag(BWGItemTags.MAKES_ORANGE_DYE).add(BWGBlocks.ORANGE_AMARANTH.getItem(), BWGBlocks.ORANGE_DAISY.getItem(), BWGBlocks.CALIFORNIA_POPPY.getItem(), BWGBlocks.GUZMANIA.getItem());
+            tag(BWGItemTags.MAKES_PINK_DYE).add(BWGBlocks.OSIRIA_ROSE.getItem(), BWGBlocks.SILVER_VASE_FLOWER.getItem(), BWGBlocks.DAFFODIL.getItem(), BWGBlocks.PEACH_LEATHER_FLOWER.getItem(), BWGBlocks.PINK_ALLIUM.getItem(), BWGBlocks.PINK_ALLIUM_FLOWER_BUSH.getItem(), BWGBlocks.PINK_DAFFODIL.getItem(), BWGBlocks.PINK_ANEMONE.getItem(), BWGBlocks.RICHEA.getItem());
+            tag(BWGItemTags.MAKES_PURPLE_DYE).add(BWGBlocks.ALLIUM_FLOWER_BUSH.getItem(), BWGBlocks.ALPINE_BELLFLOWER.getItem(), BWGBlocks.IRIS.getItem(), BWGBlocks.PURPLE_SAGE.getItem(), BWGBlocks.PURPLE_TULIP.getItem(), BWGBlocks.PURPLE_AMARANTH.getItem(), BWGBlocks.CROCUS.getItem());
+            tag(BWGItemTags.MAKES_RED_DYE).add(BWGBlocks.AMARANTH.getItem(), BWGBlocks.BEGONIA.getItem(), BWGBlocks.KOVAN_FLOWER.getItem(), BWGBlocks.ROSE.getItem(), BWGItems.RED_GLOWCANE_POWDER.get());
+            tag(BWGItemTags.MAKES_WHITE_DYE).add(BWGBlocks.WHITE_ALLIUM.getItem(), BWGBlocks.WHITE_ALLIUM_FLOWER_BUSH.getItem(), BWGBlocks.WHITE_ANEMONE.getItem(), BWGBlocks.WHITE_SAGE.getItem(), BWGBlocks.WINTER_ROSE.getItem(), BWGBlocks.SNOWDROPS.getItem(), BWGBlocks.ANGELICA.getItem(), BWGBlocks.BISTORT.getItem());
+            tag(BWGItemTags.MAKES_YELLOW_DYE).add(BWGBlocks.YELLOW_DAFFODIL.getItem(), BWGBlocks.YELLOW_TULIP.getItem(), BWGBlocks.LOLLIPOP_FLOWER.getItem(), BWGBlocks.FIRECRACKER_FLOWER_BUSH.getItem(), BWGItems.YELLOW_GLOWCANE_POWDER.get());
+
+            tag(BWGItemTags.MAKES_2_BLUE_DYE).add(BWGBlocks.DELPHINIUM.get().asItem(), BWGBlocks.BLUE_ROSE_BUSH.get().asItem());
+            tag(BWGItemTags.MAKES_2_CYAN_DYE).add(BWGBlocks.FOXGLOVE.get().asItem());
+            tag(BWGItemTags.MAKES_2_PINK_DYE).add(BWGBlocks.TALL_PINK_ALLIUM.get().asItem(), BWGBlocks.JAPANESE_ORCHID.get().asItem());
+            tag(BWGItemTags.MAKES_2_PURPLE_DYE).add(BWGBlocks.TALL_ALLIUM.get().asItem());
+            tag(BWGItemTags.MAKES_2_WHITE_DYE).add(BWGBlocks.TALL_WHITE_ALLIUM.get().asItem());
+
+            //Serene Seasons
+            tag(ModTags.Items.YEAR_ROUND_CROPS).add(BWGBlocks.GREEN_MUSHROOM.get().asItem(), BWGBlocks.WEEPING_MILKCAP.get().asItem(), BWGBlocks.WOOD_BLEWIT.get().asItem(), BWGWood.ASPEN.sapling().getBlock().asItem(), BWGWood.RED_MAPLE_SAPLING.getBlock().asItem()).addTag(BWGItemTags.OAK_SAPLINGS);
+            tag(ModTags.Items.AUTUMN_CROPS).add(BWGItems.PALE_PUMPKIN_SEEDS.get(), BWGWood.CYPRESS.sapling().getBlock().asItem(), BWGWood.EBONY.sapling().getBlock().asItem(), BWGWood.FIR.sapling().getBlock().asItem(), BWGWood.HOLLY.sapling().getBlock().asItem(), BWGWood.JACARANDA.sapling().getBlock().asItem(), BWGWood.INDIGO_JACARANDA_SAPLING.getBlock().asItem(), BWGWood.MAPLE.sapling().getBlock().asItem(), BWGWood.SILVER_MAPLE_SAPLING.getBlock().asItem(), BWGWood.PINE.sapling().getBlock().asItem(),
+                    BWGWood.WILLOW.sapling().getBlock().asItem(), BWGWood.WITCH_HAZEL.sapling().getBlock().asItem(), BWGWood.ZELKOVA.sapling().getBlock().asItem(), BWGWood.BROWN_ZELKOVA_SAPLING.getBlock().asItem(), BWGWood.IRONWOOD.sapling().getBlock().asItem(), BWGWood.SKYRIS.sapling().getBlock().asItem(), BWGWood.CIKA.sapling().getBlock().asItem(), BWGWood.ORCHARD_SAPLING.getBlock().asItem(), BWGWood.YUCCA_SAPLING.getBlock().asItem()).addTag(BWGItemTags.BIRCH_SAPLINGS).addTag(BWGItemTags.SPRUCE_SAPLINGS);
+            tag(ModTags.Items.SPRING_CROPS).add(BWGItems.ODDION_BULB.get(), BWGWood.YELLOW_SAKURA_SAPLING.getBlock().asItem(), BWGWood.WHITE_SAKURA_SAPLING.getBlock().asItem(), BWGWood.CYPRESS.sapling().getBlock().asItem(), BWGWood.FIR.sapling().getBlock().asItem(), BWGWood.EBONY.sapling().getBlock().asItem(), BWGWood.HOLLY.sapling().getBlock().asItem(),
+                    BWGWood.JACARANDA.sapling().getBlock().asItem(), BWGWood.INDIGO_JACARANDA_SAPLING.getBlock().asItem(), BWGWood.MAHOGANY.sapling().getBlock().asItem(), BWGWood.MAPLE.sapling().getBlock().asItem(), BWGWood.SILVER_MAPLE_SAPLING.getBlock().asItem(), BWGWood.PALM.sapling().getBlock().asItem(), BWGWood.PINE.sapling().getBlock().asItem(), BWGWood.REDWOOD.sapling().getBlock().asItem(), BWGWood.WHITE_MANGROVE.sapling().getBlock().asItem(), BWGWood.WILLOW.sapling().getBlock().asItem(),
+                    BWGWood.WITCH_HAZEL.sapling().getBlock().asItem(), BWGWood.ZELKOVA.sapling().getBlock().asItem(), BWGWood.BROWN_ZELKOVA_SAPLING.getBlock().asItem(), BWGWood.IRONWOOD.sapling().getBlock().asItem(), BWGWood.RAINBOW_EUCALYPTUS.sapling().getBlock().asItem(), BWGWood.ARAUCARIA_SAPLING.getBlock().asItem(), BWGWood.ORCHARD_SAPLING.getBlock().asItem(), BWGWood.YUCCA_SAPLING.getBlock().asItem(), BWGWood.SPIRIT.sapling().getBlock().asItem()).addTag(BWGItemTags.GLOWCANE_SHOOT).addTag(BWGItemTags.BIRCH_SAPLINGS).addTag(BWGItemTags.SPRUCE_SAPLINGS);
+            tag(ModTags.Items.SUMMER_CROPS).add(BWGItems.ODDION_BULB.get(), BWGItems.BLUEBERRIES.get(), BWGWood.BAOBAB.sapling().getBlock().asItem(), BWGWood.JACARANDA.sapling().getBlock().asItem(), BWGWood.INDIGO_JACARANDA_SAPLING.getBlock().asItem(), BWGWood.MAHOGANY.sapling().getBlock().asItem(), BWGWood.PALM.sapling().getBlock().asItem(), BWGWood.REDWOOD.sapling().getBlock().asItem(), BWGWood.WHITE_MANGROVE.sapling().getBlock().asItem(),
+                    BWGWood.PALO_VERDE_SAPLING.getBlock().asItem(), BWGWood.RAINBOW_EUCALYPTUS.sapling().getBlock().asItem(), BWGWood.GREEN_ENCHANTED.sapling().getBlock().asItem(), BWGWood.BLUE_ENCHANTED.sapling().getBlock().asItem(), BWGWood.ARAUCARIA_SAPLING.getBlock().asItem(), BWGWood.ORCHARD_SAPLING.getBlock().asItem(), BWGWood.YUCCA_SAPLING.getBlock().asItem(), BWGWood.SPIRIT.sapling().getBlock().asItem()).addTag(BWGItemTags.GLOWCANE_SHOOT);
+            tag(ModTags.Items.WINTER_CROPS).add(BWGWood.SKYRIS.sapling().getBlock().asItem()).addTag(BWGItemTags.SPRUCE_SAPLINGS);
+
             sortTagsAlphabeticallyAndRemoveDuplicateTagEntries(this.builders);
         }
     }
@@ -357,13 +396,20 @@ public class TagsGenerator {
 
         @Override
         protected void addTags(HolderLookup.@NotNull Provider provider) {
-            BWGBiomes.BIOME_FACTORIES.keySet().stream().sorted().toList().forEach(biome -> tag(BWGBiomeTags.OVERWORLD).add(biome));
+            BWGBiomes.BIOME_FACTORIES.keySet().stream().sorted().toList().forEach(biome -> {
+                tag(BWGBiomeTags.OVERWORLD).add(biome);
+                float temperature = provider.asGetterLookup().lookupOrThrow(Registries.BIOME).getOrThrow(biome).value().getBaseTemperature();
+                if (temperature > 0.8F) tag(BWGBiomeTags.HOT).add(biome);
+                else if (temperature < 0.5F) tag(BWGBiomeTags.COLD).add(biome);
+                else tag(BWGBiomeTags.TEMPERATE).add(biome);
+            });
             BWGBiomes.BIOMES_BY_TAG.forEach((tag, biome) -> tag(tag).add(biome));
 
             tag(BiomeTags.IS_OVERWORLD).addTag(BWGBiomeTags.OVERWORLD);
 
             tag(Tags.Biomes.IS_HOT_OVERWORLD).addTag(BWGBiomeTags.HOT);
             tag(Tags.Biomes.IS_COLD_OVERWORLD).addTag(BWGBiomeTags.COLD);
+            tag(Tags.Biomes.IS_TEMPERATE_OVERWORLD).addTag(BWGBiomeTags.TEMPERATE);
             tag(Tags.Biomes.IS_WET_OVERWORLD).addTag(BWGBiomeTags.WET);
             tag(Tags.Biomes.IS_DRY_OVERWORLD).addTag(BWGBiomeTags.DRY);
             tag(Tags.Biomes.IS_SPARSE_VEGETATION_OVERWORLD).addTag(BWGBiomeTags.SPARSE);

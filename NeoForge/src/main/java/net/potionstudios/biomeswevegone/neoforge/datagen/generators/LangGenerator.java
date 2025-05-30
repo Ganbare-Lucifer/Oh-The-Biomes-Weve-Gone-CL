@@ -38,6 +38,7 @@ public class LangGenerator extends LanguageProvider {
         BWGBlocks.BLOCKS.forEach(block -> add(block.get(), getBlockName(block)));
         BWGItems.ITEMS.forEach(item -> add(item.get(), getItemName(item)));
         add(BWGItems.MUSIC_DISC_PIXIE_CLUB.get(), "Music Disc");
+        add("item." + BiomesWeveGone.MOD_ID + ".music_disc_pixie_club.desc", "AOCAWOL - Pixie Club");
         add("jukebox_song." + BWGJukeBoxSongs.PIXIE_CLUB.location().toLanguageKey(), "AOCAWOL - Pixie Club");
         BWGWood.WOOD_BLOCK_ITEMS.forEach(wood -> {
             if (!(wood.get() instanceof BWGBoatItem boatItem) || !boatItem.hasChest())
@@ -98,6 +99,12 @@ public class LangGenerator extends LanguageProvider {
 
         add(death("inQuicksand"), "%s tried to swim in the desert");
         add(death("cattailExplosion"), "%s got too curious and put a cattail in a campfire");
+
+        add("biomeswevegone.commands.reload.success", "Successfully reloaded all configs");
+        add("biomeswevegone.commands.reload.misc.success", "Successfully reloaded misc config");
+        add("biomeswevegone.commands.reload.spawn.success", "Successfully reloaded Mob Spawn config");
+
+        add("tooltip.waila.hatch_chance", "Hatch Chance: %s");
     }
 
     private static String advancement(String key) {

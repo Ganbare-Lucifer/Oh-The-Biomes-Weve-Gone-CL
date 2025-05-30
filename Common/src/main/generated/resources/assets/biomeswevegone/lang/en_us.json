@@ -84,6 +84,9 @@
   "biome.biomeswevegone.white_mangrove_marshes": "White Mangrove Marshes",
   "biome.biomeswevegone.windswept_desert": "Windswept Desert",
   "biome.biomeswevegone.zelkova_forest": "Zelkova Forest",
+  "biomeswevegone.commands.reload.misc.success": "Successfully reloaded misc config",
+  "biomeswevegone.commands.reload.spawn.success": "Successfully reloaded Mob Spawn config",
+  "biomeswevegone.commands.reload.success": "Successfully reloaded all configs",
   "block.biomeswevegone.allium_flower_bush": "Allium Flower Bush",
   "block.biomeswevegone.allium_petal_block": "Allium Petal Block",
   "block.biomeswevegone.aloe_vera": "Aloe Vera",
@@ -1053,6 +1056,7 @@
   "item.biomeswevegone.maple_boat": "Maple Boat",
   "item.biomeswevegone.maple_chest_boat": "Maple Boat with Chest",
   "item.biomeswevegone.music_disc_pixie_club": "Music Disc",
+  "item.biomeswevegone.music_disc_pixie_club.desc": "AOCAWOL - Pixie Club",
   "item.biomeswevegone.oddion_bulb": "Oddion Bulb",
   "item.biomeswevegone.oddion_spawn_egg": "Oddion Spawn Egg",
   "item.biomeswevegone.pale_pumpkin_seeds": "Pale Pumpkin Seeds",
@@ -1095,5 +1099,6 @@
   "subtitles.entity.oddion_ambient": "Oddion purrs",
   "subtitles.entity.oddion_death": "Oddion dies",
   "subtitles.entity.oddion_happy": "Oddion happy purrs",
-  "subtitles.entity.oddion_hurt": "Oddion hurts"
+  "subtitles.entity.oddion_hurt": "Oddion hurts",
+  "tooltip.waila.hatch_chance": "Hatch Chance: %s"
 }

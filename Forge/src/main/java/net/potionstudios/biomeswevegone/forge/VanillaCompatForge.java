@@ -1,8 +1,6 @@
 package net.potionstudios.biomeswevegone.forge;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -15,6 +13,7 @@ import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.brewing.BrewingRecipeRegisterEvent;
 import net.minecraftforge.event.entity.living.EnderManAngerEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -24,12 +23,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.potionstudios.biomeswevegone.util.BoneMealHandler;
 import net.potionstudios.biomeswevegone.config.configs.BWGTradesConfig;
 import net.potionstudios.biomeswevegone.world.entity.npc.BWGVillagerTrades;
+import net.potionstudios.biomeswevegone.world.entity.pumpkinwarden.PumpkinWarden;
 import net.potionstudios.biomeswevegone.world.item.brewing.BWGBrewingRecipes;
 import net.potionstudios.biomeswevegone.world.item.tools.ToolInteractions;
 import net.potionstudios.biomeswevegone.world.level.block.BWGBlocks;
 import net.potionstudios.biomeswevegone.world.level.block.BlockFeatures;
-import net.potionstudios.biomeswevegone.world.level.levelgen.biome.BWGBiomes;
-import net.potionstudios.biomeswevegone.world.level.levelgen.feature.placed.BWGOverworldVegationPlacedFeatures;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +43,7 @@ public class VanillaCompatForge {
             AxeItem.STRIPPABLES.put(block, stripped);
         });
         BlockFeatures.registerFlammable(((FireBlock) Blocks.FIRE)::setFlammable);
-        BlockFeatures.registerCompostables((item, chance) -> ComposterBlock.add(chance, item));
+        BlockFeatures.registerCompostables((item, chance) -> ComposterBlock.COMPOSTABLES.put(item.asItem(), chance.floatValue()));
         ToolInteractions.registerFlattenables(ShovelItem.FLATTENABLES::put);
     }
 
@@ -60,6 +58,7 @@ public class VanillaCompatForge {
         bus.addListener(VanillaCompatForge::registerBrewingRecipes);
         bus.addListener(VanillaCompatForge::onBoneMealUse);
         bus.addListener(VanillaCompatForge::onEnderManAnger);
+        bus.addListener(VanillaCompatForge::onVillagerInteract);
     }
 
     /**
@@ -83,8 +82,9 @@ public class VanillaCompatForge {
      * @see FurnaceFuelBurnTimeEvent
      */
     private static void registerFuels(final FurnaceFuelBurnTimeEvent event) {
-        if (event.getItemStack().is(BWGBlocks.PEAT.get().asItem()))
-            event.setBurnTime(1200);
+        BlockFeatures.registerFurnaceFuels((block, burnTime) -> {
+            if (event.getItemStack().is(block.asItem())) event.setBurnTime(burnTime);
+        });
     }
 
     /**
@@ -134,16 +134,15 @@ public class VanillaCompatForge {
      * @see BonemealEvent
      */
     private static void onBoneMealUse(final BonemealEvent event) {
-        if (event.getLevel().isClientSide()) return;
-        ServerLevel level = (ServerLevel) event.getLevel();
-        BlockPos pos = event.getPos();
-        if (event.getBlock().is(Blocks.GRASS_BLOCK))
-            if (level.getBiome(pos).is(BWGBiomes.PRAIRIE)) {
-                BoneMealHandler.grassBoneMealHandler(level, pos.above(), BWGBlocks.PRAIRIE_GRASS.get(), BWGOverworldVegationPlacedFeatures.PRAIRIE_GRASS_BONEMEAL, false);
-                event.setResult(Event.Result.ALLOW);
-            } else if (level.getBiome(pos).is(BWGBiomes.ALLIUM_SHRUBLAND)) {
-                BoneMealHandler.grassBoneMealHandler(level, pos.above(), Blocks.SHORT_GRASS, VegetationPlacements.GRASS_BONEMEAL, true);
-                event.setResult(Event.Result.ALLOW);
-            }
+        if (!event.getLevel().isClientSide() && BoneMealHandler.bwgBoneMealEventHandler((ServerLevel) event.getLevel(), event.getPos(), event.getBlock()))
+            event.setResult(Event.Result.ALLOW);
+    }
+
+    /**
+     * Handle villager interaction.
+     * @see PlayerInteractEvent.EntityInteractSpecific
+     */
+    private static void onVillagerInteract(final PlayerInteractEvent.EntityInteractSpecific event) {
+        event.setResult(PumpkinWarden.villagerToPumpkinWarden(event.getTarget(), event.getItemStack(), event.getLevel()) ? Event.Result.DENY : Event.Result.DEFAULT);
     }
 }

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public class BWGTreeGrower extends TreeGrower {
 
-
     private final SimpleWeightedRandomList<ResourceKey<ConfiguredFeature<?, ?>>> keys;
 
     public BWGTreeGrower(String name, SimpleWeightedRandomList<ResourceKey<ConfiguredFeature<?, ?>>> keys) {
@@ -22,7 +21,7 @@ public class BWGTreeGrower extends TreeGrower {
 
     @Nullable
     @Override
-    public ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource random, boolean hasFlowers) {
+    protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource random, boolean hasFlowers) {
         return this.keys.getRandomValue(random).orElse(null);
     }
 }

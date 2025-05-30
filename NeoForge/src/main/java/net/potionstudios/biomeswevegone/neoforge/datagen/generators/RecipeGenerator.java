@@ -11,8 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.Tags;
 import net.potionstudios.biomeswevegone.BiomesWeveGone;
 import net.potionstudios.biomeswevegone.tags.BWGItemTags;
@@ -63,7 +62,7 @@ public class RecipeGenerator extends RecipeProvider {
                     .save(recipeOutput);
             hangingSign(recipeOutput, set.hangingSignItem(), set.strippedLogStem());
             woodenBoat(recipeOutput, set.boatItem().get(), set.planks());
-            chestBoat(recipeOutput, set.chestBoatItem().get(), set.planks());
+            chestBoat(recipeOutput, set.chestBoatItem().get(), set.boatItem().get());
         });
 
         woodFromLogs(recipeOutput, BWGWood.PALO_VERDE_WOOD.get(), BWGWood.PALO_VERDE_LOG.get());
@@ -139,10 +138,9 @@ public class RecipeGenerator extends RecipeProvider {
                 .save(recipeOutput, BiomesWeveGone.id("cooked_oddion_bulb_from_smoker"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, BWGItems.ALLIUM_ODDION_SOUP.get())
-                .define('#', Items.MILK_BUCKET)
+                .define('#', BWGItems.COOKED_ODDION_BULB.get())
                 .define('X', Items.BOWL)
-                .define('Y', BWGItems.COOKED_ODDION_BULB.get())
-                .pattern("#Y")
+                .pattern("##")
                 .pattern("X ")
                 .unlockedBy(getHasName(BWGItems.COOKED_ODDION_BULB.get()), has(BWGItems.COOKED_ODDION_BULB.get()))
                 .save(recipeOutput);
@@ -183,23 +181,6 @@ public class RecipeGenerator extends RecipeProvider {
         threeByThreePacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.PACKED_BLACK_ICE.get(), BWGBlocks.BLACK_ICE.get());
         threeByThreePacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.PACKED_BOREALIS_ICE.get(), BWGBlocks.BOREALIS_ICE.get());
 
-        dyeTagRecipe(recipeOutput, Items.BLACK_DYE, BWGItemTags.MAKES_BLACK_DYE);
-        dyeTagRecipe(recipeOutput, Items.BLUE_DYE, BWGItemTags.MAKES_BLUE_DYE);
-        //dyeTagRecipe(recipeOutput, Items.BROWN_DYE, BWGItemTags.MAKES_BROWN_DYE);
-        dyeTagRecipe(recipeOutput, Items.CYAN_DYE, BWGItemTags.MAKES_CYAN_DYE);
-        //dyeTagRecipe(recipeOutput, Items.GRAY_DYE, BWGItemTags.MAKES_GRAY_DYE);
-        dyeTagRecipe(recipeOutput, Items.GREEN_DYE, BWGItemTags.MAKES_GREEN_DYE);
-        //dyeTagRecipe(recipeOutput, Items.LIGHT_BLUE_DYE, BWGItemTags.MAKES_LIGHT_BLUE_DYE);
-        //dyeTagRecipe(recipeOutput, Items.LIGHT_GRAY_DYE, BWGItemTags.MAKES_LIGHT_GRAY_DYE);
-        //dyeTagRecipe(recipeOutput, Items.LIME_DYE, BWGItemTags.MAKES_LIME_DYE);
-        dyeTagRecipe(recipeOutput, Items.MAGENTA_DYE, BWGItemTags.MAKES_MAGENTA_DYE);
-        dyeTagRecipe(recipeOutput, Items.ORANGE_DYE, BWGItemTags.MAKES_ORANGE_DYE);
-        dyeTagRecipe(recipeOutput, Items.PURPLE_DYE, BWGItemTags.MAKES_PURPLE_DYE);
-        dyeTagRecipe(recipeOutput, Items.RED_DYE, BWGItemTags.MAKES_RED_DYE);
-        dyeTagRecipe(recipeOutput, Items.WHITE_DYE, BWGItemTags.MAKES_WHITE_DYE);
-        dyeTagRecipe(recipeOutput, Items.YELLOW_DYE, BWGItemTags.MAKES_YELLOW_DYE);
-        dyeTagRecipe(recipeOutput, Items.PINK_DYE, BWGItemTags.MAKES_PINK_DYE);
-
         twoByTwoPackertoFourWithStoneCutting(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.RED_ROCK_BRICKS_SET.getBase(), BWGBlocks.RED_ROCK_SET.getBase());
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.MOSSY_RED_ROCK_BRICKS_SET.getBase())
                 .requires(BWGBlocks.RED_ROCK_BRICKS_SET.getBase())
@@ -213,7 +194,9 @@ public class RecipeGenerator extends RecipeProvider {
                 .group("mossy_red_rock_bricks")
                 .unlockedBy(getHasName(Items.MOSS_BLOCK), has(Items.MOSS_BLOCK))
                 .save(recipeOutput, getConversionRecipeName(BWGBlocks.MOSSY_RED_ROCK_BRICKS_SET.getBase(), Items.MOSS_BLOCK));
-        chiseled(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_RED_ROCK_BRICKS_SET.getBase(), BWGBlocks.RED_ROCK_BRICKS_SET.getBase());
+        chiseledBuilder(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_RED_ROCK_BRICKS_SET.getBase(), Ingredient.of(BWGBlocks.RED_ROCK_BRICKS_SET.getSlab()))
+                .unlockedBy("has_tag", has(BWGItemTags.RED_ROCK_BRICKS))
+                .save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.ROCKY_STONE_SET.getBase(), 2)
                 .requires(Items.COBBLESTONE)
                 .requires(Items.STONE)
@@ -321,7 +304,7 @@ public class RecipeGenerator extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, Items.RED_WOOL)
                 .requires(BWGBlocks.ROSE_PETAL_BLOCK.get(), 9)
                 .unlockedBy(getHasName(BWGBlocks.ROSE_PETAL_BLOCK.get()), has(BWGBlocks.ROSE_PETAL_BLOCK.get()))
-                .save(recipeOutput, BiomesWeveGone.id("red_wool_from_rose__petal_block"));
+                .save(recipeOutput, BiomesWeveGone.id("red_wool_from_rose_petal_block"));
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.SANDY_DIRT.get(), 4)
                 .requires(Items.SAND, 2)
@@ -418,6 +401,8 @@ public class RecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(BWGBlocks.CARVED_PALE_PUMPKIN.get()), has(BWGBlocks.CARVED_PALE_PUMPKIN.get()))
                 .save(recipeOutput, BiomesWeveGone.id("pale_jack_o_lantern_from_soul_fruit"));
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BWGItems.PALE_PUMPKIN_SEEDS.get(), 4).requires(BWGBlocks.PALE_PUMPKIN.get()).unlockedBy(getHasName(BWGBlocks.PALE_PUMPKIN.get()), has(BWGBlocks.PALE_PUMPKIN.get())).save(recipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Blocks.SOUL_TORCH, 4)
                 .define('X', Ingredient.of(Items.COAL, Items.CHARCOAL))
                 .define('#', Items.STICK)
@@ -436,6 +421,34 @@ public class RecipeGenerator extends RecipeProvider {
                 .pattern("###")
                 .unlockedBy(getHasName(BWGItems.SOUL_FRUIT.get()), has(BWGItems.SOUL_FRUIT.get()))
                 .save(recipeOutput);
+
+        oneToOneConversionRecipe(recipeOutput, Items.BLACK_DYE, BWGItemTags.MAKES_BLACK_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.BLUE_DYE, BWGItemTags.MAKES_BLUE_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.CYAN_DYE, BWGItemTags.MAKES_CYAN_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.GREEN_DYE, BWGItemTags.MAKES_GREEN_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.LIGHT_BLUE_DYE, BWGItemTags.MAKES_LIGHT_BLUE_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.LIME_DYE, BWGItemTags.MAKES_LIME_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.MAGENTA_DYE, BWGItemTags.MAKES_MAGENTA_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.ORANGE_DYE, BWGItemTags.MAKES_ORANGE_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.PINK_DYE, BWGItemTags.MAKES_PINK_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.PURPLE_DYE, BWGItemTags.MAKES_PURPLE_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.RED_DYE, BWGItemTags.MAKES_RED_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.WHITE_DYE, BWGItemTags.MAKES_WHITE_DYE);
+        oneToOneConversionRecipe(recipeOutput, Items.YELLOW_DYE, BWGItemTags.MAKES_YELLOW_DYE);
+
+        oneToTwoConversionRecipe(recipeOutput, Items.BLUE_DYE, BWGItemTags.MAKES_2_BLUE_DYE);
+        oneToTwoConversionRecipe(recipeOutput, Items.CYAN_DYE, BWGItemTags.MAKES_2_CYAN_DYE);
+        oneToTwoConversionRecipe(recipeOutput, Items.PINK_DYE, BWGItemTags.MAKES_2_PINK_DYE);
+        oneToTwoConversionRecipe(recipeOutput, Items.PURPLE_DYE, BWGItemTags.MAKES_2_PURPLE_DYE);
+        oneToTwoConversionRecipe(recipeOutput, Items.WHITE_DYE, BWGItemTags.MAKES_2_WHITE_DYE);
+    }
+
+    private static void oneToOneConversionRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> ingredient) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, 1).requires(ingredient).group(getItemName(result)).unlockedBy("has_dye_tag", has(ingredient)).save(recipeOutput, getItemName(result) + "_from_bwg_dye_tag");
+    }
+
+    private static void oneToTwoConversionRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> ingredient) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, 2).requires(ingredient).group(getItemName(result)).unlockedBy("has_2_dye_tag", has(ingredient)).save(recipeOutput, getItemName(result) + "_from_bwg_2_dye_tag");
     }
 
     private static void sandToGlass(RecipeOutput finishedRecipeConsumer, BWGSandSet set, Item glass) {
@@ -470,12 +483,4 @@ public class RecipeGenerator extends RecipeProvider {
 				.unlockedBy(getHasName(ingredient), has(ingredient))
 				.save(finishedRecipeConsumer);
 	}
-
-    private static void dyeTagRecipe(RecipeOutput finishedRecipeConsumer, Item dye, TagKey<Item> tag) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, dye)
-                .requires(tag)
-                .unlockedBy(tag.toString(), has(tag))
-                .group(getHasName(dye).replace("has_", ""))
-                .save(finishedRecipeConsumer, BiomesWeveGone.id(getHasName(dye).replace("has_", "")+ "_from_bwg_tag"));
-    }
 }

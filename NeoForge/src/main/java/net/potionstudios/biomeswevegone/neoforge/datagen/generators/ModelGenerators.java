@@ -117,6 +117,14 @@ public class ModelGenerators {
         @Override
         protected void registerStatesAndModels() {
             BWGBlocks.cubeAllBlocks.forEach(block -> simpleBlockWithItem(block.get(), cubeAll(block.get())));
+            models().withExistingParent(name(BWGBlocks.LUSH_DIRT_PATH.get()), mcLoc("block/dirt_path")).texture("particle", blockBWGTexture(BWGBlocks.LUSH_DIRT.get())).texture("top", mcLoc("block/dirt_path_top")).texture("side", blockBWGTexture(BWGBlocks.LUSH_DIRT_PATH.get(), "side")).texture("bottom", blockBWGTexture(BWGBlocks.LUSH_DIRT.get()));
+            simpleBlockItem(BWGBlocks.LUSH_DIRT_PATH.get(), models().getExistingFile(blockBWGTexture(BWGBlocks.LUSH_DIRT_PATH.get())));
+            models().withExistingParent(name(BWGBlocks.SANDY_DIRT_PATH.get()), mcLoc("block/dirt_path")).texture("particle", blockBWGTexture(BWGBlocks.SANDY_DIRT.get())).texture("top", mcLoc("block/dirt_path_top")).texture("side", blockBWGTexture(BWGBlocks.SANDY_DIRT_PATH.get(), "side")).texture("bottom", blockBWGTexture(BWGBlocks.SANDY_DIRT.get()));
+            simpleBlockItem(BWGBlocks.SANDY_DIRT_PATH.get(), models().getExistingFile(blockBWGTexture(BWGBlocks.SANDY_DIRT_PATH.get())));
+            models().withExistingParent(name(BWGBlocks.LUSH_GRASS_BLOCK.get()), mcLoc("block/grass_block")).texture("particle", blockBWGTexture(BWGBlocks.LUSH_DIRT.get())).texture("top", blockBWGTexture(BWGBlocks.LUSH_GRASS_BLOCK.get(), "top")).texture("side", blockBWGTexture(BWGBlocks.LUSH_GRASS_BLOCK.get(), "side")).texture("bottom", blockBWGTexture(BWGBlocks.LUSH_DIRT.get())).texture("overlay", blockBWGTexture(BWGBlocks.LUSH_GRASS_BLOCK.get(), "side_overlay")).renderType("cutout_mipped");
+            models().withExistingParent(name(BWGBlocks.OVERGROWN_DACITE.get()), mcLoc("block/grass_block")).texture("particle", blockBWGTexture(BWGBlocks.DACITE_SET.getBase())).texture("top", blockBWGTexture(BWGBlocks.OVERGROWN_DACITE.get(), "top")).texture("side", blockBWGTexture(BWGBlocks.OVERGROWN_DACITE.get(), "side")).texture("bottom", blockBWGTexture(BWGBlocks.DACITE_SET.getBase())).texture("overlay", blockBWGTexture(BWGBlocks.OVERGROWN_DACITE.get(), "side_overlay")).renderType("cutout_mipped");
+            models().withExistingParent(name(BWGBlocks.OVERGROWN_STONE.get()), mcLoc("block/grass_block")).texture("particle", blockTexture(Blocks.STONE)).texture("top", blockBWGTexture(BWGBlocks.OVERGROWN_STONE.get(), "top")).texture("side", blockBWGTexture(BWGBlocks.OVERGROWN_STONE.get(), "side")).texture("bottom", blockTexture(Blocks.STONE)).texture("overlay", blockBWGTexture(BWGBlocks.OVERGROWN_STONE.get(), "side_overlay")).renderType("cutout_mipped");
+
             BWGBlocks.BLOCKS.forEach(entry -> {
                 Block block = entry.get();
                 if (block instanceof StemBlock){
@@ -405,6 +413,21 @@ public class ModelGenerators {
             }, TreeBranchBlock.WATERLOGGED);
             simpleBlockWithItem(BWGBlocks.WITCH_HAZEL_BLOSSOM.get(), models().getExistingFile(blockBWGTexture(BWGBlocks.WITCH_HAZEL_BLOSSOM.get())));
             simpleBlockWithItem(BWGWood.SPIRIT_ROOTS.get(), models().getExistingFile(blockBWGTexture(BWGWood.SPIRIT_ROOTS.get())));
+
+            registerPatchBlockStates(BWGBlocks.CLOVER_PATCH.get(), new String[]{"clover_patch", "clover_patch2", "clover_patch3", "clover_patch4"});
+            registerPatchBlockStates(BWGBlocks.FLOWER_PATCH.get(), new String[]{"flower_patch", "flower_patch2", "flower_patch3"});
+        }
+
+        private void registerPatchBlockStates(Block block, String[] models) {
+            VariantBlockStateBuilder builder = getVariantBuilder(block);
+            int[] rotations = {0, 90, 180, 270};
+
+            for (String model : models) {
+                for (int rotation : rotations) {
+                    builder.partialState()
+                            .addModels(new ConfiguredModel(models().getExistingFile(modLoc("block/" + model)), 0, rotation, false));
+                }
+            }
         }
 
         private void snowyRotatableBlock(Block block) {

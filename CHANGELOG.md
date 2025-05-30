@@ -1,3 +1,128 @@
+# 2.3.13
+- Fix Missing or Non-Existent Pool error village/pumpkin_patch/streetsa
+- Update Russian (ru_ru) Translations (Credits: rfin0)
+- Update Forgotten, Salem, and Skyis Village Lamps files
+
+# 2.3.12
+- Replace awt Color with FastColor in BWGItems.java (Fixes some issues with loading the mod on certain server software)
+  - Remove awt from BiomesWeveGoneClient.java
+- Add BWG Pumpkins to Common Pumpkin Tags
+- Add Sandy Farmland to NeoForge Villager Farmland Tags to allow villagers to plant on it
+- Require Oh The Trees You'll Grow 5.0.10 or newer (Fixes Trunk Bug)
+
+# 2.3.11
+- Require Oh The Trees You'll Grow 5.0.9 or newer
+- Fix NeoForge Logo not showing up in Mod Menu
+- Overhauls to the following (These changes are made to better match vanilla):
+  - Composting
+    - All Cattail Thatch Blocks are now compostable
+    - All Cooked Fruits have a 75% chance to be compostable
+    - All Pies have a 100% chance to be compostable
+    - All Fruits(Including Spores, Caps and Bulbs) have a 65% chance to be compostable
+    - All Mushroom blocks have a 85% chance to be compostable
+    - BlueBerries have a 30% chance to be compostable (Matches Vanilla Sweet Berries)
+    - Spirit Roots have a 30% chance to be compostable
+    - Sakura Petal Blocks have a 30% chance to be compostable
+    - Pitcher Plants Match Vanilla Pitcher Plants at 85% chance
+  - Flammability
+    - Now Flammable:
+      - All Cattail Thatch Blocks
+      - Sakura Petal Blocks
+      - Spirit Roots
+      - Jacaranda Bushes
+      - Shrub
+      - Leaf Pile
+      - Clover and Flower Patches
+      - Hydrangea Hedges and Bushes
+      - Skyris Vines
+  - Furnace Fuel
+    - New Fuels:
+      - Cattail Thatch Blocks
+      - Spirit Roots
+      - Crafting Tables
+      - Bookshelves
+      - Forager Table
+
+# 2.3.10 (Forge/NeoForge Only)
+- Fix Lush Grass Block, Overgrown Stone and Dacite Missing Cutout Render type
+
+# 2.3.9
+- Improve Many Block and Item Model files
+
+# 2.3.8
+- Fix Flower Dye Recipes
+- Add BlueBerries to Blue Dye Recipe
+- Improve a bunch of flowers hitboxes
+- Update French (fr_fr) Translations (Credits: Brandcraf06)
+- Add Missing Music Disc Description key to Language Files
+- Improve Oddion and Pumpkin Warden dimension update logic
+
+# 2.3.7
+- Add Right-Clicking on Baby Villager With Weakness Potion with a Carved Pumpkin to turn them into a Pumpkin Warden
+- Remove BWGItemTags for Dye Conversions, Replace with Explicit Recipes (Like Vanilla)
+- Fix Tall Flowers only making 1 dye instead of 2
+
+# 2.3.6
+- Fix Vine like blocks not being compostable on Forge
+- Sync biomeswevegone:temperate tag to c:is_temperate/overworld
+- Match all BWG Biomes to Climate Tags Based on Temperature
+- Full Serene Seasons Compatability
+- Fix ManOWar Air Supply being different when spawned in on land
+  - Normal Conditions ManOWar will die on land after 5 minutes
+  - If the biome is marked as a dry biome the ManOWar will die sooner (random between 1 and 5 minutes)
+
+# 2.3.5
+- Make Soul Fruit Blindness Effect configurable
+- Add Misc and Mob Spawn Config Reload Commands
+- Update Many TreeGrowers to better match the tree they are growing
+  - This includes making trees with large bases require 2x2 saplings  
+
+# 2.3.4
+- Give all BWG Entities Eye Heights
+- Increase Oddion Hitbox Size
+- Decrease Pumpkin Warden Hitbox Size
+- Move Oddion to Entity Type Creature
+  - This Change should fix large amounts of Oddions spawning in the same areas 
+  - If you are experiencing issues with lots of Oddions we suggest killing off the ones in the area and letting the new ones spawn in with the new changes
+- Move ManOWar to Entity Type Water Creature
+- Update Hitbox Size when pose changes for Oddion and Pumpkin warden
+- Decrease ManOWar Spawn Weight and Minimum Group Size
+
+# 2.3.3
+- Add ModMenu Support (Fabric) 
+- Fix Oddion Despawning 
+- Give ManOWar Custom Persistence
+- Make Poison Ivy and Skyris Vine copy Vanilla Vine Properties
+- Remove Replacement Recipe for Vanilla Crafting Table
+- Fix Oddion Crop interactions being incorrect
+- Add WTHIT Support for BWG Saplings, StemBlocks, and Oddion Crop
+- Fix Chest Boat Recipes being incorrect 
+- Improve ManOWar Color Selection Logic
+- Fix pumpkin warden farming goals
+
+# 2.3.2
+- Remove Milk from Allium Oddion Soup Recipe, Change Nutrition value from 9 to 8
+- Add BWG Sand Blocks and Mushrooms to Enderman Holdable BlockTag
+- Add BlueBerry Bush to Fall Damage Resetting BlockTag
+- Add BWG SandStone, Red Rock, Dacite, and Packed Ice Variants to Overworld Carver Replaceables
+- Add Soul Fruit to Piglin Repellents ItemTag
+- Add Palo Verde Logs Tag to Logs that Burn Tag
+- Add Red Rock Bricks Block and Item Tags
+- Add Glow Cane Block Tag
+- Add Glow Bottle Block and Item Tags
+- Fix Incorrect Chiseled Red Rock Bricks Recipe
+- Fix Red Wool from Rose Petal Block Recipe having path typo
+
+# 2.3.1
+- Add Missing Spanish (Chile) Language Keys
+- Add Missing Spirit Roots LootTable/Drops
+- BoneMealing The Hydrange Hedge block will now Drop Hydrangea Hedges
+- Fix BWG Planks not being shown to craft specific wood set crafting tables
+- BoneMealing Grass Block/Lush Grass Block/Overgrown Stone/Dacite will now grow not just grass but any flower from that biomes flower pool
+- Make Tall Allium and Allium Flower Bush make Magenta Dye to match Vanilla
+- Add Built-in Support for Repurposed Structures (Adds Forager Houses to Villages) (NeoForge & Fabric) (Credits: TelepathicGrunt)
+- Add Pale Pumpkin to Pale Pumpkin Seeds Recipe
+
 # 2.3.0 -> Major Internal Changes and Refactors
 - Add Spanish (Chile) Translations (es_cl) (Credits: Ganbare-Lucifer)
 - Generalize Particle, Block and Item Color Registrations

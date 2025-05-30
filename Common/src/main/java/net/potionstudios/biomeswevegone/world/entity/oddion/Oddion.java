@@ -34,12 +34,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.potionstudios.biomeswevegone.config.configs.BWGMobSpawnConfig;
 import net.potionstudios.biomeswevegone.sounds.BWGSounds;
+import net.potionstudios.biomeswevegone.world.entity.BWGEntities;
 import net.potionstudios.biomeswevegone.world.item.BWGItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
-
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -88,6 +88,10 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
     public Oddion(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.onionTime = 6000;
+    }
+
+    public Oddion(Level level) {
+        this(BWGEntities.ODDION.get(), level);
     }
 
     @Override
@@ -170,6 +174,13 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
 //
 //        super.tick();
 //    }
+
+    @Override
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> dataAccessor) {
+        super.onSyncedDataUpdated(dataAccessor);
+        if (GROUNDED.equals(dataAccessor))
+            refreshDimensions();
+    }
 
     @Override
     public void aiStep() {
@@ -328,8 +339,14 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
     }
 
     @Override
-    public void setVariant(Variant variant) {
+    public void setVariant(@NotNull Variant variant) {
         this.entityData.set(DATA_VARIANT, variant.getId());
+    }
+
+    @Override
+    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
+        if (isGrounded()) return this.getType().getDimensions().scale(1F, 0.25F);
+        return super.getDimensions(pose);
     }
 
     @Override
@@ -369,7 +386,7 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
             return BY_ID.apply(id);
         }
 
-        private static Variant getSpawnVariant(RandomSource random) {
+        private static Variant getSpawnVariant(@NotNull RandomSource random) {
             int i = random.nextInt(100);
             return i < 47 ? STANDARD : i < 94 ? PINK : ALBINO;
         }
