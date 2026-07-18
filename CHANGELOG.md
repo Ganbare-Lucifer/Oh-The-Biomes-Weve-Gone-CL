@@ -1,3 +1,133 @@
+# 2.6.0 – Config Changes
+- Move worldgeneration config to json from json5 to match all other configs
+- Correctly update missing keys in json configs
+- Automatically migrate legacy config files to the new format (Will be removed in 2.7.0)
+- Add more comments to better clarify things to users in config files
+- Allow Fine Grained Vanilla Biome Features to be disabled on NeoForge
+- Add Green Apple to Horse Food Item Tag
+- Update Recipes that use Eggs to use #c:eggs Tag
+
+# 2.5.5
+- Add Polish (pl_pl) Translations (Credits: kierohere)
+- Allow Trial Chambers Structures to spawn in/under BWG Biomes
+- Fix Incorrect English Language key for Granny Smith Advancement
+- Add the ability to disable Features added to Vanilla Biomes on NeoForge
+- Fix Boulders being placed into trees
+- Fix Surface Rules issues with the Mojave Desert, Rainbow Beach, and Windswept Desert
+
+# 2.5.4
+- Add PathBlockType to Desert Plants.  (Forge/NeoForge Only)
+- Make Barrel Cactus give Cactus Damage when collided with
+
+# 2.5.3
+- Fix Baby Villagers not being able to be turned into Pumpkin Wardens (Fabric)
+- Adjust some Language Keys for Skyris Vale Biome
+- Compatibility with Autumnity – When present, our Medium Pumpkin Feature is replaced with their Pumpkin Feature (NeoForge)
+- Add PathBlockType to BlueBerry Bush.  (Forge/NeoForge Only)
+
+# 2.5.2
+- Add Compatibility with BucketLib and UnderGarden Dynamic Bucket
+- Fix BWG Chest Boats changing to Aspen type on server reload
+
+# 2.5.1
+- Fix BWG Mushroom Blocks missing Mineable with Axe Tag
+- Update French (fr_fr) Translations (Credits: Brandcraf06)
+
+# 2.5.0 – Breaking Changes
+- Please read -> The major change in this update is the renaming of the registry name of skyrise_vale to skyris_vale to fix a typo.
+  This change is "breaking", all skyrise_vale will show up as plains if you look in the F3 menu, however the biome will still look correct, the only difference is the name shown in F3 and /locate will not find it.
+  All new chunks/new worlds will have the correct skyris_vale biome name.
+    The other breaking change is the removal of the villager upgrade command, this was planned to be removed in 2.5.0, this command is rarely used and not really necessary for 99.9% of players.
+- Fix Skyris Vale having incorrect Registered Name (skyrise_vale -> skyris_vale) 
+- Remove Villager Upgrade Command
+- Fix Pumpkin Warden Picks up Items tag not loading on Forge
+- Update Tree Configured Features to use Builders
+- Slight Performance Improvement during generation of most Trees
+- Add Iron Golems to Red Rock, Salem, Swamp Villages
+- Add More Processing for Red Rock Town Center 2 and 3 and all Swamp Town Centers
+
+# 2.4.8
+- Fix missing Chicken Pool and Missing Pool warnings in Pumpkin Patch Village
+- Add some Missing Block and Item Tags
+- Fix Witch Hazel Blossom and Branch not being compostable and flammable
+- Witch Hazel Branch to Stick Recipe, allow branch to be used as furnace fuel
+
+# 2.4.7
+- Add Pale Pumpkin Seeds to Chicken and Parrot Food
+- Add Blueberries to Fox Food
+- Add Cacti to Camel Food
+- Allow Other Modded Carved pumpkins to be used to change villagers into Pumpkin Wardens (Using Tag)
+- Allow placing BWG Saplings on all FarmLand Blocks
+- Allow planting BushBlock on all FarmLand Blocks (Fabric Only)
+- Update Ukrainian (uk_ua) Translations (Credits: unroman)
+
+# 2.4.6
+- Add Vietnamese (vi_vn) Translations (Credits: Celyne)
+- Fix Pale Mud Series missing Mineable Tags
+- Add Wood Blewit to Enderman Holdable BlockTag
+- Add BWG Ice to Geode invalid BlockTag
+- Add BWG Lily Pads and Sakura Petal Blocks to Inside Step Sound BlockTag
+- Add Pale Mud to Mangrove logs and roots can grow through BlockTag
+- Fix Replaceable Tag
+- Fix Oddions Not spawning 
+
+# 2.4.5
+- Use c:chests/wooden Item tag for BWG Chest Boats
+- Fix bonemeal not using up when bonemealing grass blocks on NeoForge
+- Fix incompatibility with Slayer's Beasts, remove duplicate feature from Coniferous Forest(s)
+- Fix Tall Beach and Prairie Grass dropping two tall grass instead of normal grass
+- Fix sniffer dropping all bwg loot instead of just one (Forge/NeoForge Only)
+
+# 2.4.4
+- Fix White Puffball not growing over time
+- Fix Misc and Mob Spawn Configs not generating sometimes
+
+# 2.4.3
+- Release Pumpkin Warden from Pumpkin Burrow when broken by TNT, Creeper, or Wither
+- Ignore more info for Pumpkin Burrow Storage
+- Fix Enter Pumpkin Burrow Crash
+- Fix Pumpkin Wardens not going to their burrows when they are broken and replaced with the warden inside them
+- Fix Pumpkin Warden Teleporting to the Pumpkin Burrow when it is broken and replaced with the warden inside it
+
+# 2.4.2
+- Fix Forgotten Village Terminators
+- Fix Pumpkin Burrow not releasing Warden on break
+
+# 2.4.1
+- Update Chinese (Simplified) Translations (zh_cn) (Credits: Crown-Fairy) for Village Update
+- Fix a bunch of Missing Recipes
+- Remove Polish and Tiled Red Rock from Red Rock Bricks Tags
+- Fix Maple Trapdoor and Door Render Type
+- Fix Naming error in Dacite Tiles
+
+# 2.4.0 The Village Update -> https://github.com/Potion-Studios/Oh-The-Biomes-Weve-Gone/discussions/279
+- This is a major update not all changes are listed here, please check the discussion for more details
+- New Biomes
+  - Cypress Wetlands
+  - Red Rock Peaks
+- Biome Revamps
+  - Pumpkin Valley 
+  - Red Rock Valley
+- Structures
+  - New Swamp Village
+  - Skyis Village Reworked with White Dacite
+  - Red Rock Village Updated Look
+  - Pumpkin Patch Village Completely Reworked
+  - Add Custom Biomes We've gone Villager Types to each of our Villages
+- Pumpkin Warden
+  - Reworked AI system to be closer to Villagers
+- New Time Traveler Advancement 
+- New Better Days Music Disc
+- Blocks
+  - New White Dacite Sets
+  - Normal Dacite Cracked, Chiseled, Cracked and Mossy Variants
+  - New Polished and Tiled Red Rock Sets
+  - New Pumpkin Burrow Block
+  - New Wreath Blocks
+- Require NeoForge 21.1.173 or newer
+- Require Forge 52.0.47 or newer
+- Add Support for Fabric Permissions API & Luckperms (For Commands)
+
 # 2.3.13
 - Fix Missing or Non-Existent Pool error village/pumpkin_patch/streetsa
 - Update Russian (ru_ru) Translations (Credits: rfin0)
@@ -142,6 +272,7 @@
 - Fix BWG trades on NeoForge
 - Add BWG Items to Wandering Trader Trades
 - New BWG Trades Config with Wandering Trader Options, and Option to disable Forager Trades
+- Add BWG Villager Types with Custom Skins and adjusted Trades for each type
 
 # 2.2.5
 - Make Pale Pumpkin Set Compostable

@@ -62,7 +62,7 @@ public class RecipeGenerator extends RecipeProvider {
                     .save(recipeOutput);
             hangingSign(recipeOutput, set.hangingSignItem(), set.strippedLogStem());
             woodenBoat(recipeOutput, set.boatItem().get(), set.planks());
-            chestBoat(recipeOutput, set.chestBoatItem().get(), set.boatItem().get());
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, set.chestBoatItem().get()).requires(Tags.Items.CHESTS_WOODEN).requires(set.boatItem().get()).group("chest_boat").unlockedBy("has_boat", has(ItemTags.BOATS)).save(recipeOutput);
         });
 
         woodFromLogs(recipeOutput, BWGWood.PALO_VERDE_WOOD.get(), BWGWood.PALO_VERDE_LOG.get());
@@ -80,7 +80,7 @@ public class RecipeGenerator extends RecipeProvider {
         });
 
         BWGBlockSet.getBlockSets().forEach(set -> {
-            generateRecipes(recipeOutput, set.getBlockFamily(), FeatureFlagSet.of());
+            generateRecipes(recipeOutput, set.getBlockFamily(), FeatureFlagSet.of(FeatureFlags.VANILLA));
             if (set.getBase().defaultBlockState().getSoundType() == SoundType.STONE || set.getBase().defaultBlockState().getSoundType() == SoundType.NETHERRACK || set.getBase().defaultBlockState().getSoundType() == SoundType.MUD_BRICKS)
                 generateFamilyStoneCutterRecipes(recipeOutput, set);
         });
@@ -146,7 +146,7 @@ public class RecipeGenerator extends RecipeProvider {
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, BWGItems.BLOOMING_ODDION.get())
-                .define('#', Items.EGG)
+                .define('#', Tags.Items.EGGS)
                 .define('X', Items.WHEAT)
                 .define('Y', BWGItems.COOKED_ODDION_BULB.get())
                 .pattern("X#X")
@@ -197,6 +197,17 @@ public class RecipeGenerator extends RecipeProvider {
         chiseledBuilder(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_RED_ROCK_BRICKS_SET.getBase(), Ingredient.of(BWGBlocks.RED_ROCK_BRICKS_SET.getSlab()))
                 .unlockedBy("has_tag", has(BWGItemTags.RED_ROCK_BRICKS))
                 .save(recipeOutput);
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_RED_ROCK_BRICKS_SET.getBase(), BWGBlocks.RED_ROCK_SET.getSlab());
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_RED_ROCK_BRICKS_SET.getBase(), BWGBlocks.RED_ROCK_BRICKS_SET.getBase());
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BWGBlocks.RED_ROCK_BRICKS_SET.getBase()), RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CRACKED_RED_ROCK_BRICKS_SET.getBase(), 0.1F, 200)
+                .unlockedBy(getHasName(BWGBlocks.RED_ROCK_BRICKS_SET.getBase()), has(BWGBlocks.RED_ROCK_BRICKS_SET.getBase()))
+                .save(recipeOutput);
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BWGBlocks.RED_ROCK_SET.getBase()), RecipeCategory.BUILDING_BLOCKS, BWGBlocks.POLISHED_RED_ROCK_SET.getBase(), 0.35F, 200)
+                .unlockedBy(getHasName(BWGBlocks.RED_ROCK_SET.getBase()), has(BWGBlocks.RED_ROCK_SET.getBase()))
+                .save(recipeOutput, BiomesWeveGone.id("polished_red_rock_from_smelting"));
+        twoByTwoPackertoFourWithStoneCutting(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.RED_ROCK_TILES_SET.getBase(), BWGBlocks.RED_ROCK_BRICKS_SET.getBase());
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.RED_ROCK_TILES_SET.getBase(), BWGBlocks.POLISHED_RED_ROCK_SET.getBase());
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.ROCKY_STONE_SET.getBase(), 2)
                 .requires(Items.COBBLESTONE)
                 .requires(Items.STONE)
@@ -219,12 +230,64 @@ public class RecipeGenerator extends RecipeProvider {
 
         smeltingResultFromBase(recipeOutput, BWGBlocks.DACITE_SET.getBase(), BWGBlocks.DACITE_COBBLESTONE_SET.getBase());
         twoByTwoPackertoFourWithStoneCutting(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.DACITE_BRICKS_SET.getBase(), BWGBlocks.DACITE_SET.getBase());
-        twoByTwoPackertoFourWithStoneCutting(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.DACITE_TILE_SET.getBase(), BWGBlocks.DACITE_BRICKS_SET.getBase());
+        twoByTwoPackertoFourWithStoneCutting(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.DACITE_TILES_SET.getBase(), BWGBlocks.DACITE_BRICKS_SET.getBase());
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.DACITE_PILLAR.get())
                 .define('#', BWGBlocks.DACITE_SET.getBase())
                 .pattern("#")
                 .pattern("#")
                 .unlockedBy(getHasName(BWGBlocks.DACITE_SET.getBase()), has(BWGBlocks.DACITE_SET.getBase()))
+                .save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.MOSSY_DACITE_BRICKS_SET.getBase())
+                .requires(BWGBlocks.DACITE_BRICKS_SET.getBase())
+                .requires(Items.VINE)
+                .group("mossy_dacite_bricks")
+                .unlockedBy(getHasName(Items.VINE), has(Items.VINE))
+                .save(recipeOutput, getConversionRecipeName(BWGBlocks.MOSSY_DACITE_BRICKS_SET.getBase(), Items.VINE));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.MOSSY_DACITE_BRICKS_SET.getBase())
+                .requires(BWGBlocks.DACITE_BRICKS_SET.getBase())
+                .requires(Items.MOSS_BLOCK)
+                .group("mossy_dacite_bricks")
+                .unlockedBy(getHasName(Items.MOSS_BLOCK), has(Items.MOSS_BLOCK))
+                .save(recipeOutput, getConversionRecipeName(BWGBlocks.MOSSY_DACITE_BRICKS_SET.getBase(), Items.MOSS_BLOCK));
+        chiseledBuilder(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_DACITE_BRICKS_SET.getBase(), Ingredient.of(BWGBlocks.DACITE_BRICKS_SET.getSlab()))
+                .unlockedBy("has_tag", has(BWGItemTags.DACITE_BRICKS))
+                .save(recipeOutput);
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_DACITE_BRICKS_SET.getBase(), BWGBlocks.DACITE_SET.getSlab());
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_DACITE_BRICKS_SET.getBase(), BWGBlocks.DACITE_BRICKS_SET.getBase());
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BWGBlocks.DACITE_BRICKS_SET.getBase()), RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CRACKED_DACITE_BRICKS_SET.getBase(), 0.1F, 200)
+                .unlockedBy(getHasName(BWGBlocks.DACITE_BRICKS_SET.getBase()), has(BWGBlocks.DACITE_BRICKS_SET.getBase()))
+                .save(recipeOutput);
+
+        smeltingResultFromBase(recipeOutput, BWGBlocks.WHITE_DACITE_SET.getBase(), BWGBlocks.WHITE_DACITE_COBBLESTONE_SET.getBase());
+        twoByTwoPackertoFourWithStoneCutting(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase(), BWGBlocks.WHITE_DACITE_SET.getBase());
+        twoByTwoPackertoFourWithStoneCutting(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.WHITE_DACITE_TILES_SET.getBase(), BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase());
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.WHITE_DACITE_PILLAR.get())
+                .define('#', BWGBlocks.WHITE_DACITE_SET.getBase())
+                .pattern("#")
+                .pattern("#")
+                .unlockedBy(getHasName(BWGBlocks.WHITE_DACITE_SET.getBase()), has(BWGBlocks.WHITE_DACITE_SET.getBase()))
+                .save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.MOSSY_WHITE_DACITE_BRICKS_SET.getBase())
+                .requires(BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase())
+                .requires(Items.VINE)
+                .group("mossy_white_dacite_bricks")
+                .unlockedBy(getHasName(Items.VINE), has(Items.VINE))
+                .save(recipeOutput, getConversionRecipeName(BWGBlocks.MOSSY_WHITE_DACITE_BRICKS_SET.getBase(), Items.VINE));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.MOSSY_WHITE_DACITE_BRICKS_SET.getBase())
+                .requires(BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase())
+                .requires(Items.MOSS_BLOCK)
+                .group("mossy_white_dacite_bricks")
+                .unlockedBy(getHasName(Items.MOSS_BLOCK), has(Items.MOSS_BLOCK))
+                .save(recipeOutput, getConversionRecipeName(BWGBlocks.MOSSY_WHITE_DACITE_BRICKS_SET.getBase(), Items.MOSS_BLOCK));
+        chiseledBuilder(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_WHITE_DACITE_BRICKS_SET.getBase(), Ingredient.of(BWGBlocks.WHITE_DACITE_BRICKS_SET.getSlab()))
+                .unlockedBy("has_tag", has(BWGItemTags.WHITE_DACITE_BRICKS))
+                .save(recipeOutput);
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_WHITE_DACITE_BRICKS_SET.getBase(), BWGBlocks.WHITE_DACITE_SET.getSlab());
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CHISELED_WHITE_DACITE_BRICKS_SET.getBase(), BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase());
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase()), RecipeCategory.BUILDING_BLOCKS, BWGBlocks.CRACKED_WHITE_DACITE_BRICKS_SET.getBase(), 0.1F, 200)
+                .unlockedBy(getHasName(BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase()), has(BWGBlocks.WHITE_DACITE_BRICKS_SET.getBase()))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.WINDSWEPT_SANDSTONE_PILLAR.get())
@@ -257,14 +320,14 @@ public class RecipeGenerator extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, BWGItems.GREEN_APPLE_PIE.get())
                 .requires(BWGItems.GREEN_APPLE.get())
                 .requires(Items.SUGAR)
-                .requires(Items.EGG)
+                .requires(Tags.Items.EGGS)
                 .unlockedBy(getHasName(BWGItems.GREEN_APPLE.get()), has(BWGItems.GREEN_APPLE.get()))
                 .save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, BWGItems.BLUEBERRY_PIE.get())
                 .requires(BWGItems.BLUEBERRIES.get())
                 .requires(Items.SUGAR)
-                .requires(Items.EGG)
+                .requires(Tags.Items.EGGS)
                 .unlockedBy(getHasName(BWGItems.BLUEBERRIES.get()), has(BWGItems.BLUEBERRIES.get()))
                 .save(recipeOutput);
 
@@ -282,9 +345,9 @@ public class RecipeGenerator extends RecipeProvider {
         carpet(recipeOutput, BWGBlocks.CATTAIL_THATCH_CARPET.get(), BWGBlocks.CATTAIL_THATCH.get());
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.DECORATIONS, Items.ALLIUM, RecipeCategory.DECORATIONS, BWGBlocks.ALLIUM_PETAL_BLOCK.get());
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.DECORATIONS, BWGBlocks.PINK_ALLIUM.getBlock(), RecipeCategory.DECORATIONS, BWGBlocks.PINK_ALLIUM_PETAL_BLOCK.get());
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.DECORATIONS, BWGBlocks.WHITE_ALLIUM.getBlock(), RecipeCategory.DECORATIONS, BWGBlocks.WHITE_ALLIUM_PETAL_BLOCK.get());
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.DECORATIONS, BWGBlocks.ROSE.getBlock(), RecipeCategory.DECORATIONS, BWGBlocks.ROSE_PETAL_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.DECORATIONS, BWGBlocks.PINK_ALLIUM.getItem(), RecipeCategory.DECORATIONS, BWGBlocks.PINK_ALLIUM_PETAL_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.DECORATIONS, BWGBlocks.WHITE_ALLIUM.getItem(), RecipeCategory.DECORATIONS, BWGBlocks.WHITE_ALLIUM_PETAL_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.DECORATIONS, BWGBlocks.ROSE.getItem(), RecipeCategory.DECORATIONS, BWGBlocks.ROSE_PETAL_BLOCK.get());
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, Items.PURPLE_WOOL)
                 .requires(BWGBlocks.ALLIUM_PETAL_BLOCK.get(), 9)
@@ -380,10 +443,10 @@ public class RecipeGenerator extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, Items.PUMPKIN_PIE)
                 .requires(BWGBlocks.PALE_PUMPKIN.get())
                 .requires(Items.SUGAR)
-                .requires(Items.EGG)
+                .requires(Tags.Items.EGGS)
                 .unlockedBy(getHasName(BWGBlocks.CARVED_PALE_PUMPKIN.get()), has(BWGBlocks.CARVED_PALE_PUMPKIN.get()))
                 .unlockedBy(getHasName(BWGBlocks.PALE_PUMPKIN.get()), has(BWGBlocks.PALE_PUMPKIN.get()))
-                .save(recipeOutput);
+                .save(recipeOutput, BiomesWeveGone.id("pumpkin_pie"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BWGBlocks.PALE_JACK_O_LANTERN.get())
                 .define('A', BWGBlocks.CARVED_PALE_PUMPKIN.get())
@@ -422,6 +485,12 @@ public class RecipeGenerator extends RecipeProvider {
                 .unlockedBy(getHasName(BWGItems.SOUL_FRUIT.get()), has(BWGItems.SOUL_FRUIT.get()))
                 .save(recipeOutput);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BWGItems.PUMPKIN_BURROW.get())
+                .requires(ItemTags.SHOVELS)
+                .requires(Tags.Items.PUMPKINS_CARVED)
+                .unlockedBy("has_carved_pumpkin", has(Tags.Items.PUMPKINS_CARVED))
+                .save(recipeOutput);
+
         oneToOneConversionRecipe(recipeOutput, Items.BLACK_DYE, BWGItemTags.MAKES_BLACK_DYE);
         oneToOneConversionRecipe(recipeOutput, Items.BLUE_DYE, BWGItemTags.MAKES_BLUE_DYE);
         oneToOneConversionRecipe(recipeOutput, Items.CYAN_DYE, BWGItemTags.MAKES_CYAN_DYE);
@@ -441,6 +510,74 @@ public class RecipeGenerator extends RecipeProvider {
         oneToTwoConversionRecipe(recipeOutput, Items.PINK_DYE, BWGItemTags.MAKES_2_PINK_DYE);
         oneToTwoConversionRecipe(recipeOutput, Items.PURPLE_DYE, BWGItemTags.MAKES_2_PURPLE_DYE);
         oneToTwoConversionRecipe(recipeOutput, Items.WHITE_DYE, BWGItemTags.MAKES_2_WHITE_DYE);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BWGItems.WREATH.get())
+                .define('#', ItemTags.LEAVES)
+                .pattern(" # ")
+                .pattern("# #")
+                .pattern(" # ")
+                .unlockedBy("has_leaves", has(ItemTags.LEAVES))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BWGItems.HOLLY_WREATH.get())
+                .define('#', Items.SWEET_BERRIES)
+                .define('X', BWGItems.WREATH.get())
+                .pattern(" # ")
+                .pattern("#X#")
+                .pattern(" # ")
+                .unlockedBy(getHasName(BWGItems.WREATH.get()), has(BWGItems.WREATH.get()))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BWGItems.ODDION_WREATH.get())
+                .define('#', BWGItems.ODDION_BULB.get())
+                .define('X', BWGItems.WREATH.get())
+                .pattern(" # ")
+                .pattern("#X#")
+                .pattern(" # ")
+                .unlockedBy(getHasName(BWGItems.WREATH.get()), has(BWGItems.WREATH.get()))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BWGItems.MUSHROOM_WREATH.get())
+                .define('#', Tags.Items.MUSHROOMS)
+                .define('X', BWGItems.WREATH.get())
+                .pattern(" # ")
+                .pattern("#X#")
+                .pattern(" # ")
+                .unlockedBy(getHasName(BWGItems.WREATH.get()), has(BWGItems.WREATH.get()))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BWGItems.ROSY_WREATH.get())
+                .define('#', BWGBlocks.ROSE.getItem())
+                .define('X', BWGBlocks.OSIRIA_ROSE.getItem())
+                .define('Y', BWGItems.WREATH.get())
+                .pattern(" # ")
+                .pattern("XYX")
+                .pattern(" # ")
+                .unlockedBy(getHasName(BWGItems.WREATH.get()), has(BWGItems.WREATH.get()))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BWGItems.PETAL_WREATH.get())
+                .define('#', Items.PINK_PETALS)
+                .define('X', BWGBlocks.WHITE_SAKURA_PETALS.get())
+                .define('Y', BWGBlocks.YELLOW_SAKURA_PETALS.get())
+                .define('Z', BWGItems.WREATH.get())
+                .pattern(" X ")
+                .pattern("YZY")
+                .pattern(" # ")
+                .unlockedBy(getHasName(BWGItems.WREATH.get()), has(BWGItems.WREATH.get()))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BWGItems.WINTER_ROSY_WREATH.get())
+                .define('#', BWGBlocks.WINTER_ROSE.getItem())
+                .define('X', BWGBlocks.BLACK_ROSE.getItem())
+                .define('Y', BWGItems.WREATH.get())
+                .pattern(" # ")
+                .pattern("XYX")
+                .pattern(" # ")
+                .unlockedBy(getHasName(BWGItems.WREATH.get()), has(BWGItems.WREATH.get()))
+                .save(recipeOutput);
+
+        oneToOneConversionRecipe(recipeOutput, Items.STICK, BWGBlocks.WITCH_HAZEL_BRANCH.get(), "sticks");
     }
 
     private static void oneToOneConversionRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> ingredient) {

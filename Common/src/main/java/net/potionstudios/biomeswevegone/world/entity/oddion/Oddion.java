@@ -34,7 +34,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.potionstudios.biomeswevegone.config.configs.BWGMobSpawnConfig;
 import net.potionstudios.biomeswevegone.sounds.BWGSounds;
-import net.potionstudios.biomeswevegone.world.entity.BWGEntities;
+import net.potionstudios.biomeswevegone.world.entity.BWGEntityType;
 import net.potionstudios.biomeswevegone.world.item.BWGItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,7 +53,7 @@ import java.util.function.IntFunction;
 /**
  * The Oddion Entity
  *
- * @author YaBoiChips
+ * @author JT122406
  * @see PathfinderMob
  * @see GeoEntity
  */
@@ -79,7 +79,7 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
 
     public int onionTime;
 
-    public Goal movementGoal = new WaterAvoidingRandomStrollGoal(this, 1.0D);
+    private final Goal movementGoal = new WaterAvoidingRandomStrollGoal(this, 1.0D);
 
 
     @Nullable
@@ -91,7 +91,7 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
     }
 
     public Oddion(Level level) {
-        this(BWGEntities.ODDION.get(), level);
+        this(BWGEntityType.ODDION.get(), level);
     }
 
     @Override
@@ -126,13 +126,18 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
     }
 
     public static boolean checkOddionSpawnRules(EntityType<? extends Oddion> entity, LevelAccessor world, MobSpawnType spawnType, BlockPos pos, RandomSource rand) {
-        return BWGMobSpawnConfig.INSTANCE.oddion && world.getBlockState(pos.below()).is(BlockTags.DIRT);
+        return BWGMobSpawnConfig.INSTANCE.oddion && world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON);
     }
 
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         this.setVariant(Variant.getSpawnVariant(level.getRandom()));
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
     }
 
     @Override
@@ -359,8 +364,8 @@ public class Oddion extends PathfinderMob implements GeoEntity, VariantHolder<Od
         PINK(1, "pink"),
         ALBINO(2, "albino");
 
-        private static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
         private static final IntFunction<Variant> BY_ID = ByIdMap.continuous(Variant::getId, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
+        public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
         private final String name;
         private final int id;
 

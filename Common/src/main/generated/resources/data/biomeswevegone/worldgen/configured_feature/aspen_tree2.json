@@ -9,6 +9,9 @@
     "can_leaves_place_filter": {
       "type": "minecraft:replaceable"
     },
+    "can_logs_place_filter": {
+      "type": "minecraft:replaceable"
+    },
     "canopy_location": "biomeswevegone:features/trees/aspen/aspen_canopy2",
     "decorators": [
       {
@@ -41,20 +44,15 @@
       "min_inclusive": 7
     },
     "leaves_provider": {
-      "type": "minecraft:weighted_state_provider",
-      "entries": [
-        {
-          "data": {
-            "Name": "biomeswevegone:aspen_leaves",
-            "Properties": {
-              "distance": "7",
-              "persistent": "false",
-              "waterlogged": "false"
-            }
-          },
-          "weight": 1
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "biomeswevegone:aspen_leaves",
+        "Properties": {
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
         }
-      ]
+      }
     },
     "leaves_target": [
       "minecraft:oak_leaves"

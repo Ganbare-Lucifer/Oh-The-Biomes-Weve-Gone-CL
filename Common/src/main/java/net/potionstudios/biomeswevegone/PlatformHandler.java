@@ -1,5 +1,6 @@
 package net.potionstudios.biomeswevegone;
 
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -36,17 +37,20 @@ public interface PlatformHandler {
 	PlatformHandler PLATFORM_HANDLER = load(PlatformHandler.class);
 
 	/**
-	 * Gets the name of the current platform
-	 *
-	 * @return The name of the current platform.
-	 */
-	Platform getPlatform();
-
-	/**
 	 * Gets the path to the config directory
 	 * @return The path to the config directory
 	 */
 	Path configPath();
+
+	/**
+	 * Checks if the player has the specified permission
+	 * @param sourceStack The command source stack to check the permission for
+	 * @param permission The permission to check
+	 * @return True if the player has the permission, false otherwise
+	 */
+	default boolean hasPermission(@NotNull CommandSourceStack sourceStack, @NotNull String permission) {
+		return sourceStack.hasPermission(4);
+	}
 
 	/**
 	 * Registers a block entity with the specified parameters
@@ -65,7 +69,7 @@ public interface PlatformHandler {
 	 * @param validRange The max range of the POI Type
 	 * @return Supplier of the PoiType
 	 */
-	default Supplier<PoiType> registerPOIType(String id, Supplier<Block> block, int maxTickets, int validRange) {
+	default Supplier<PoiType> registerPOIType(String id, Supplier<? extends Block> block, int maxTickets, int validRange) {
 		return register(BuiltInRegistries.POINT_OF_INTEREST_TYPE, id, () -> new PoiType(PoiTypes.getBlockStates(block.get()), maxTickets, validRange));
 	}
 
@@ -162,9 +166,11 @@ public interface PlatformHandler {
 	 */
 	<T> Supplier<Holder.Reference<T>> registerForHolder(Registry<T> registry, String name, Supplier<T> value);
 
-	enum Platform {
-		FORGE,
-		FABRIC,
-		NEOFORGE
+	/**
+	 * Checks if the current environment is a data generation environment
+	 * @return True if the current environment is a data generation environment, false otherwise
+	 */
+	default boolean isDatagen() {
+		return false;
 	}
 }

@@ -26,7 +26,7 @@
       "net.potionstudios.biomeswevegone.fabric.client.BiomesWeveGoneClientFabric"
     ],
     "terrablender": [
-      "net.potionstudios.biomeswevegone.fabric.BWGTerrablenderEntry"
+	  "net.potionstudios.biomeswevegone.fabric.BWGTerraBlenderEntry"
     ]
   },
   "mixins": [
@@ -42,7 +42,8 @@
     "geckolib": ">=4.6"
   },
   "suggests": {
-    "WTHIT": ">=8.15.0"
+    "WTHIT": ">=8.15.0",
+    "fabric-permissions-api-v0": "*"
   },
   "custom": {
     "modmenu": {

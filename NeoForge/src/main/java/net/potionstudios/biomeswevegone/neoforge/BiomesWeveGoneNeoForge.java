@@ -7,20 +7,19 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.potionstudios.biomeswevegone.BiomesWeveGone;
-import net.potionstudios.biomeswevegone.commands.BWGReloadCommand;
+import net.potionstudios.biomeswevegone.commands.BWGCommands;
+import net.potionstudios.biomeswevegone.neoforge.conditions.BWGConditions;
 import net.potionstudios.biomeswevegone.neoforge.loot.LootModifiersRegister;
-import net.potionstudios.biomeswevegone.world.entity.BWGEntities;
+import net.potionstudios.biomeswevegone.world.entity.BWGEntityType;
 import net.potionstudios.biomeswevegone.world.entity.npc.BWGVillagerTrades;
-import net.potionstudios.biomeswevegone.world.level.levelgen.biome.BWGOverworldSurfaceRules;
-import net.potionstudios.biomeswevegone.world.level.levelgen.biome.BWGTerraBlenderRegion;
-import terrablender.api.SurfaceRuleManager;
+import net.potionstudios.biomeswevegone.world.level.levelgen.biome.TerraBlenderRegister;
 
 @Mod(BiomesWeveGone.MOD_ID)
 public class BiomesWeveGoneNeoForge {
-
 	public BiomesWeveGoneNeoForge(final IEventBus eventBus) {
 		IEventBus EVENT_BUS = NeoForge.EVENT_BUS;
 		BiomesWeveGone.init();
@@ -28,11 +27,13 @@ public class BiomesWeveGoneNeoForge {
 		eventBus.addListener(this::onInitialize);
 		eventBus.addListener(this::onPostInitialize);
 		EVENT_BUS.addListener((ServerAboutToStartEvent event) -> BiomesWeveGone.serverStart(event.getServer()));
-		eventBus.addListener((EntityAttributeCreationEvent event) -> BWGEntities.registerEntityAttributes(event::put));
-		eventBus.addListener((RegisterSpawnPlacementsEvent event) -> BWGEntities.registerSpawnPlacements((consumer) -> event.register(consumer.entityType(), consumer.spawnPlacementType(), consumer.heightmapType(), consumer.predicate(), RegisterSpawnPlacementsEvent.Operation.OR)));
-		EVENT_BUS.addListener((RegisterCommandsEvent event) -> BWGReloadCommand.register(event.getDispatcher()::register));
+		eventBus.addListener((EntityAttributeCreationEvent event) -> BWGEntityType.registerEntityAttributes(event::put));
+		eventBus.addListener((RegisterSpawnPlacementsEvent event) -> BWGEntityType.registerSpawnPlacements((consumer) -> event.register(consumer.entityType(), consumer.spawnPlacementType(), consumer.heightmapType(), consumer.predicate(), RegisterSpawnPlacementsEvent.Operation.OR)));
+		EVENT_BUS.addListener((RegisterCommandsEvent event) -> BWGCommands.register(event.getDispatcher()::register));
+		EVENT_BUS.addListener((EntityJoinLevelEvent event) -> BiomesWeveGone.onEntityLoad(event.getEntity()));
 		VanillaCompatNeoForge.registerVanillaCompatEvents(EVENT_BUS);
 		LootModifiersRegister.register(eventBus);
+		BWGConditions.conditions(eventBus);
 	}
 
 	/**
@@ -43,9 +44,8 @@ public class BiomesWeveGoneNeoForge {
 		event.enqueueWork(() -> {
 			BiomesWeveGone.commonSetup();
 			VanillaCompatNeoForge.init();
-			BWGTerraBlenderRegion.registerTerrablenderRegions();
+			TerraBlenderRegister.register();
 			NeoForgePlatformHandler.registerPottedPlants();
-			SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, BiomesWeveGone.MOD_ID, BWGOverworldSurfaceRules.makeRules());
 		});
 	}
 

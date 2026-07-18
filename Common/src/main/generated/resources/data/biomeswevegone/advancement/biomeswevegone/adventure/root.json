@@ -257,6 +257,22 @@
       },
       "trigger": "minecraft:location"
     },
+    "biomeswevegone:cypress_wetlands": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "biomeswevegone:cypress_wetlands"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
     "biomeswevegone:dacite_ridges": {
       "conditions": {
         "player": [
@@ -625,6 +641,22 @@
       },
       "trigger": "minecraft:location"
     },
+    "biomeswevegone:red_rock_peaks": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "biomeswevegone:red_rock_peaks"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
     "biomeswevegone:red_rock_valley": {
       "conditions": {
         "player": [
@@ -737,7 +769,7 @@
       },
       "trigger": "minecraft:location"
     },
-    "biomeswevegone:skyrise_vale": {
+    "biomeswevegone:skyris_vale": {
       "conditions": {
         "player": [
           {
@@ -745,7 +777,7 @@
             "entity": "this",
             "predicate": {
               "location": {
-                "biomes": "biomeswevegone:skyrise_vale"
+                "biomes": "biomeswevegone:skyris_vale"
               }
             }
           }
@@ -883,6 +915,7 @@
       "biomeswevegone:crag_gardens",
       "biomeswevegone:crimson_tundra",
       "biomeswevegone:cypress_swamplands",
+      "biomeswevegone:cypress_wetlands",
       "biomeswevegone:dacite_ridges",
       "biomeswevegone:dacite_shore",
       "biomeswevegone:dead_sea",
@@ -906,6 +939,7 @@
       "biomeswevegone:prairie",
       "biomeswevegone:pumpkin_valley",
       "biomeswevegone:rainbow_beach",
+      "biomeswevegone:red_rock_peaks",
       "biomeswevegone:red_rock_valley",
       "biomeswevegone:redwood_thicket",
       "biomeswevegone:rose_fields",
@@ -913,7 +947,7 @@
       "biomeswevegone:sakura_grove",
       "biomeswevegone:shattered_glacier",
       "biomeswevegone:sierra_badlands",
-      "biomeswevegone:skyrise_vale",
+      "biomeswevegone:skyris_vale",
       "biomeswevegone:temperate_grove",
       "biomeswevegone:tropical_rainforest",
       "biomeswevegone:weeping_witch_forest",

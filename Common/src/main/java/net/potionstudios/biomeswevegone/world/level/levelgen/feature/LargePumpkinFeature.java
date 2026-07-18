@@ -1,7 +1,7 @@
 package net.potionstudios.biomeswevegone.world.level.levelgen.feature;
 
 import com.mojang.serialization.Codec;
-import corgitaco.corgilib.world.level.RandomTickScheduler;
+import dev.corgitaco.ohthetreesyoullgrow.world.level.chunk.RandomTickScheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -32,10 +32,11 @@ public class LargePumpkinFeature extends Feature<NoneFeatureConfiguration> {
 
         BlockPos featureOrigin = context.origin();
         BlockPos origin = featureOrigin.offset(0, diameter / 2, 0);
-
+        WorldGenLevel level = context.level();
+        if (level.getLevel().structureManager().hasAnyStructureAt(origin))
+            return false;
 
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
-        WorldGenLevel level = context.level();
 
         int surfaceRadiusCheck = radius - 1;
 

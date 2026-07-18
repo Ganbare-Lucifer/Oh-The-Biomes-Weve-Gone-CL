@@ -9,7 +9,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.ChestBoat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.potionstudios.biomeswevegone.world.entity.BWGEntities;
+import net.potionstudios.biomeswevegone.world.entity.BWGEntityType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -24,7 +24,7 @@ public class BWGChestBoatEntity extends ChestBoat {
     }
 
     public BWGChestBoatEntity(Level level, double x, double y, double z) {
-        this(BWGEntities.BWG_CHEST_BOAT.get(), level);
+        this(BWGEntityType.BWG_CHEST_BOAT.get(), level);
         this.setPos(x, y, z);
         this.xo = x;
         this.yo = y;
@@ -47,16 +47,16 @@ public class BWGChestBoatEntity extends ChestBoat {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound) {
-        pCompound.putString("Type", this.getModVariant().getSerializedName());
+    protected void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
+        pCompound.putString("Type", this.getModVariant().getSerializedName());
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
+    protected void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("Type", 8))
             this.setVariant(BWGBoatEntity.Type.byName(pCompound.getString("Type")));
-        super.readAdditionalSaveData(pCompound);
     }
 
     public BWGBoatEntity.Type getModVariant() {

@@ -9,7 +9,7 @@ architectury {
     neoForge()
 }
 
-val minecraftVersion = project.properties["minecraft_version"] as String
+val minecraftVersion = providers.gradleProperty("minecraft_version").get()
 
 configurations {
     create("common")
@@ -32,28 +32,31 @@ loom {
 
     runs.create("datagen") {
         data()
-        programArgs("--all", "--mod", "biomeswevegone")
-        programArgs("--output", project(":Common").file("src/main/generated/resources").absolutePath)
-        programArgs("--existing", project(":Common").file("src/main/resources").absolutePath)
+        programArguments.addAll(
+            "--all", "--mod", "biomeswevegone",
+            "--output", project(":Common").file("src/main/generated/resources").absolutePath,
+            "--existing", project(":Common").file("src/main/resources").absolutePath
+        )
     }
 }
 
 dependencies {
-    neoForge("net.neoforged:neoforge:${project.properties["neoforge_version"]}")
+    neoForge("net.neoforged:neoforge:${providers.gradleProperty("neoforge_version").get()}")
 
     "common"(project(":Common", "namedElements")) { isTransitive = false }
     "shadowBundle"(project(":Common", "transformProductionNeoForge"))
 
-    modLocalRuntime("me.djtheredstoner:DevAuth-neoforge:${project.properties["devauth_version"]}")
+    modLocalRuntime("me.djtheredstoner:DevAuth-neoforge:${providers.gradleProperty("devauth_version").get()}")
 
-    modApi("com.github.glitchfiend:TerraBlender-neoforge:$minecraftVersion-${project.properties["terrablender_version"]}")
-    modApi("corgitaco.corgilib:Corgilib-NeoForge:$minecraftVersion-${project.properties["corgilib_version"]}")
-    modApi("dev.corgitaco:Oh-The-Trees-Youll-Grow-neoforge:$minecraftVersion-${project.properties["ohthetreesyoullgrow_version"]}")
-    modApi("software.bernie.geckolib:geckolib-neoforge-$minecraftVersion:${project.properties["geckolib_version"]}")
+    modApi("com.github.glitchfiend:TerraBlender-neoforge:$minecraftVersion-${providers.gradleProperty("terrablender_version").get()}")
+    modApi("dev.corgitaco:Corgilib-NeoForge:$minecraftVersion-${providers.gradleProperty("corgilib_version").get()}")
+    modApi("dev.corgitaco:Oh-The-Trees-Youll-Grow-neoforge:$minecraftVersion-${providers.gradleProperty("ohthetreesyoullgrow_version").get()}")
+    modApi("software.bernie.geckolib:geckolib-neoforge-$minecraftVersion:${providers.gradleProperty("geckolib_version").get()}")
+    compileOnly("net.luckperms:api:5.4")
 
-    modCompileOnly("mcp.mobius.waila:wthit-api:neo-${project.properties["WTHIT"]}")
-    modLocalRuntime("mcp.mobius.waila:wthit:neo-${project.properties["WTHIT"]}")
-    modLocalRuntime("lol.bai:badpackets:neo-${project.properties["badPackets"]}")
+    modCompileOnly("mcp.mobius.waila:wthit-api:neo-${providers.gradleProperty("WTHIT").get()}")
+    modLocalRuntime("mcp.mobius.waila:wthit:neo-${providers.gradleProperty("WTHIT").get()}")
+    modLocalRuntime("lol.bai:badpackets:neo-${providers.gradleProperty("badPackets").get()}")
 
     modApi("com.github.glitchfiend:SereneSeasons-neoforge:$minecraftVersion-10.1.0.3")
 
